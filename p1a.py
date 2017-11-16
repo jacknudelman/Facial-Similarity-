@@ -156,7 +156,7 @@ mean_loss = list()
 xyz_loss = []
 
 iter_num = 0
-for epoch in range(15):
+for epoch in range(10):
     print epoch
 # graph stuff
         # set the variable for pltting to 0
