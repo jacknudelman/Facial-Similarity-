@@ -165,7 +165,7 @@ for epoch in range(15):
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         # print target.shape
-        target = torch.from_numpy(target).view(net.batchSize, -1)
+        target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False).cuda()
 
