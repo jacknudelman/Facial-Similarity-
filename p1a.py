@@ -183,7 +183,7 @@ for epoch in range(15):
             training_loss_list.append(running_training_loss)
             testing_loss_list.append(compute_test_loss(net))
             running_training_loss = 0
-            mean_loss.append(xyz_loss[-55:].mean())
+            mean_loss.append(np.mean(xyz_loss[-55:]))
 
 plt.plot(mean_loss)
 plt.plot(training_loss_list)
