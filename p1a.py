@@ -1,5 +1,5 @@
-# TODO do I have to shuffle on the dataloader?
 
+# TODO when do I have to set to 0 or 1
 from data_extraction import *
 import torch
 from torch.autograd import Variable
@@ -7,6 +7,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms, utils
 from torch.utils.data import Dataset, DataLoader
+
+
+
+batchSize = 12
 
 class Net(nn.Module):
 
@@ -106,7 +110,7 @@ transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.To
 
 face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=transformation)
 
-batchSize = 12
+global batchSize
 dataloader = DataLoader(face_dataset, batch_size=batchSize, shuffle=True, num_workers=batchSize)
 
 learning_rate = 1e-6
@@ -157,17 +161,15 @@ def compute_test_loss(net) :
 
     face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=transformation)
 
-    batchSize = 12
+    global batchSize
     dataloader = DataLoader(face_dataset, batch_size=batchSize, shuffle=True, num_workers=batchSize)
 
-    learning_rate = 1e-6
-    optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     criterion = nn.BCELoss()
 
     running_loss = 0
 
     for sample_batch in dataloader:
-        out = net(Variable(sample_batch['image1'], requires_grad=True), Variable(sample_batch['image2'], requires_grad=True))
+        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         target = torch.from_numpy(target).view(batchSize, -1)
@@ -175,11 +177,8 @@ def compute_test_loss(net) :
         target = Variable(target, requires_grad=False)
 
         loss = criterion(out, target)
-        running_loss += torch.sum(loss)
+        running_loss += loss.data[0]
         net.zero_grad()
-
-        loss.backward()
-        optimizer.step()
 
     return running_loss
 
