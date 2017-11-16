@@ -127,12 +127,12 @@ for epoch in range(15):
 # graph stuff
         # set the variable for pltting to 0
     for sample_batch in dataloader:
-        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
+        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda()).cuda()
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         target = torch.from_numpy(target).view(net.batchSize, -1)
         target = target.type(torch.FloatTensor)
-        target = Variable(target, requires_grad=False)
+        target = Variable(target, requires_grad=False).cuda()
 
         loss = criterion(out, target)
         running_training_loss += loss.data[0]
