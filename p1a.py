@@ -186,7 +186,7 @@ for epoch in range(10):
             testing_loss_list.append(compute_test_loss(net))
             running_training_loss = 0
             mean_loss.append(np.mean(xyz_loss[-55:]))
-    # torch.save(net, 'net_state_' + str(epoch))
+    torch.save(net, 'net_state')
 
 plt.plot(mean_loss)
 plt.plot(training_loss_list)
