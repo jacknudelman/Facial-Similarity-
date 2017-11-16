@@ -116,15 +116,20 @@ def compute_test_loss(net):
 
     running_loss = 0
 
+
     for sample_batch in dataloader:
-        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda()).cuda()
+        # print 'in test set'
+        # print Variable(sample_batch['image1'], requires_grad=True).size()
+        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
+        # print target.shape
         target = torch.from_numpy(target).view(net.batchSize, -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False).cuda()
 
         loss = criterion(out, target)
+        print loss.size()
         running_loss += loss.data[0]
         net.zero_grad()
 
@@ -134,7 +139,7 @@ net = Net(12).cuda()
 
 transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
-face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=transformation)
+face_dataset = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transformation=transformation)
 
 
 dataloader = DataLoader(face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
@@ -154,14 +159,17 @@ for epoch in range(15):
 # graph stuff
         # set the variable for pltting to 0
     for sample_batch in dataloader:
-        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda()).cuda()
+        # print Variable(sample_batch['image1'], requires_grad=True).size()
+        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
+        # print target.shape
         target = torch.from_numpy(target).view(net.batchSize, -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False).cuda()
 
         loss = criterion(out, target)
+        # print loss.size()
         running_training_loss += loss.data[0]
         net.zero_grad()
 
@@ -170,7 +178,7 @@ for epoch in range(15):
         xyz_loss.append(loss.data[0])
 
         iter_num += 1
-        if iter_num % 55 == 0:
+        if iter_num % 2 == 0:
             training_loss_list.append(running_training_loss)
             testing_loss_list.append(compute_test_loss(net))
             running_training_loss = 0
