@@ -156,6 +156,7 @@ mean_loss = list()
 xyz_loss = []
 
 iter_num = 0
+numPlots = 1
 for epoch in range(1):
     print epoch
 # graph stuff
@@ -182,8 +183,12 @@ for epoch in range(1):
 
         iter_num += 1
         if iter_num % 55 == 0:
+            print numPlots
+            numPlots += 1
             training_loss_list.append(running_training_loss)
-            testing_loss_list.append(compute_test_loss(net))
+            t = compute_test_loss(net)
+            print running_training_loss.shape
+            testing_loss_list.append(t)
             running_training_loss = 0
             mean_loss.append(np.mean(xyz_loss[-55:]))
     torch.save(net, 'net_state')
