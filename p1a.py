@@ -134,9 +134,9 @@ def compute_test_loss(net):
         running_loss += loss.data[0]
         net.zero_grad()
 
-    return running_loss
+    return running_loss / 1000
 
-net = Net(20).cuda()
+net = Net(40).cuda()
 
 transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
@@ -171,36 +171,39 @@ for epoch in range(10):
         target = Variable(target, requires_grad=False).cuda()
 
         loss = criterion(out, target)
-        # print loss.size()
         running_training_loss += loss.data[0]
         net.zero_grad()
 
         loss.backward()
         optimizer.step()
-        xyz_loss.append(loss.data[0])
+        # xyz_loss.append(loss.data[0])
 
 
         iter_num += 1
-        if iter_num % 55 == 0:
-            training_loss_list.append(running_training_loss)
+        if iter_num % 2 != 0:
+            training_loss_list.append(running_training_loss / 2)
+            running_training_loss = 0
             t = compute_test_loss(net)
             testing_loss_list.append(t)
-            running_training_loss = 0
-            mean_loss.append(np.mean(xyz_loss[-55:]))
-    torch.save(net, 'net_state')
+            # mean_loss.append(np.mean(xyz_loss[-55:]))
+
+
+
+torch.save(net, 'net_state')
 
 print len(training_loss_list)
 print len(testing_loss_list)
-print len(mean_loss)
-fig1 = plt.plot(mean_loss)
-plt.savefig('fig1')
-plt.clf()
+# print len(mean_loss)
+# fig1 = plt.plot(mean_loss)
+# plt.savefig('fig1')
+# plt.clf()
 fig2 = plt.plot(training_loss_list)
 plt.savefig('fig2')
+plt.title('training loss')
 plt.clf()
 fig3 = plt.plot(testing_loss_list)
 plt.savefig('fig3')
-plt.clf()
+plt.title('testing loss')
 
 
 # for i_batch, sample_batch in enumerate(dataloader):
