@@ -139,7 +139,7 @@ net = Net(12).cuda()
 
 transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
-face_dataset = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transformation=transformation)
+face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=transformation)
 
 
 dataloader = DataLoader(face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
