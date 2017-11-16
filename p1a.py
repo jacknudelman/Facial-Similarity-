@@ -10,13 +10,12 @@ from torch.utils.data import Dataset, DataLoader
 
 
 
-batchSize = 12
 
 class Net(nn.Module):
 
-    def __init__(self):
+    def __init__(self, batchSize):
         super(Net, self).__init__()
-
+        self.batchSize = batchSize
         self.maxPool = nn.MaxPool2d(2, stride=(2,2))
         self.linearLayer1 = nn.Linear(131072, 1024)
         self.linearLayer2 = nn.Linear(2048, 1)
@@ -104,14 +103,14 @@ def show_batch(sample_batch):
     plt.show()
 
 
-net = Net().cuda()
+net = Net(12).cuda()
 
 transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
 face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=transformation)
 
-global batchSize
-dataloader = DataLoader(face_dataset, batch_size=batchSize, shuffle=True, num_workers=batchSize)
+
+dataloader = DataLoader(face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
 learning_rate = 1e-6
 optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
@@ -131,7 +130,7 @@ for epoch in range(15):
         out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
-        target = torch.from_numpy(target).view(batchSize, -1)
+        target = torch.from_numpy(target).view(net.batchSize, -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False)
 
@@ -162,8 +161,8 @@ def compute_test_loss(net) :
 
     face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=transformation)
 
-    global batchSize
-    dataloader = DataLoader(face_dataset, batch_size=batchSize, shuffle=True, num_workers=batchSize)
+    # global batchSize
+    dataloader = DataLoader(face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
     criterion = nn.BCELoss()
 
@@ -173,7 +172,7 @@ def compute_test_loss(net) :
         out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
-        target = torch.from_numpy(target).view(batchSize, -1)
+        target = torch.from_numpy(target).view(net.batchSize, -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False)
 
