@@ -183,22 +183,26 @@ for epoch in range(1):
 
         iter_num += 1
         if iter_num % 55 == 0:
-            print numPlots
             numPlots += 1
             training_loss_list.append(running_training_loss)
             t = compute_test_loss(net)
-            print running_training_loss.shape
             testing_loss_list.append(t)
             running_training_loss = 0
             mean_loss.append(np.mean(xyz_loss[-55:]))
     torch.save(net, 'net_state')
 
+print len(training_loss_list)
+print len(testing_loss_list)
+print len(mean_loss)
 fig1 = plt.plot(mean_loss)
+plt.savefig('fig1')
+plt.clf()
 fig2 = plt.plot(training_loss_list)
+plt.savefig('fig2')
+plt.clf()
 fig3 = plt.plot(testing_loss_list)
-# plt.show()
-plt.savefig('fig')
-
+plt.savefig('fig1')
+plt.clf()
 
 
 # for i_batch, sample_batch in enumerate(dataloader):
