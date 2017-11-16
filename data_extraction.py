@@ -12,7 +12,7 @@ import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import numpy as np
 from torch.autograd import Variable
-import pandas as pd
+# import pandas as pd
 import os
 from skimage import io
 from PIL import Image
