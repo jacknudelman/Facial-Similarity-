@@ -124,6 +124,7 @@ xyz_loss = []
 
 iter_num = 0
 for epoch in range(15):
+    print epoch
 # graph stuff
         # set the variable for pltting to 0
     for sample_batch in dataloader:
