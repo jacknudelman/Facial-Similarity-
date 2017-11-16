@@ -179,6 +179,8 @@ for epoch in range(15):
         optimizer.step()
         xyz_loss.append(loss.data[0])
 
+        torch.save(net, 'net_state_' + str(epoch))
+
         iter_num += 1
         if iter_num % 55 == 0:
             training_loss_list.append(running_training_loss)
