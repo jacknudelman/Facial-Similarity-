@@ -156,7 +156,7 @@ mean_loss = list()
 xyz_loss = []
 
 iter_num = 0
-for epoch in range(10):
+for epoch in range(1):
     print epoch
 # graph stuff
         # set the variable for pltting to 0
@@ -188,10 +188,13 @@ for epoch in range(10):
             mean_loss.append(np.mean(xyz_loss[-55:]))
     torch.save(net, 'net_state')
 
-plt.plot(mean_loss)
-plt.plot(training_loss_list)
-plt.plot(testing_loss_list)
-plt.show()
+fig1 = plt.plot(mean_loss)
+fig2 = plt.plot(training_loss_list)
+fig3 = plt.plot(testing_loss_list)
+# plt.show()
+plt.savefig(fig1, 'fig1')
+plt.savefig(fig1, 'fig2')
+plt.savefig(fig1, 'fig3')
 
 
 
