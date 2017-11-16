@@ -151,7 +151,8 @@ criterion = nn.BCELoss()
 running_training_loss = 0
 training_loss_list = list()
 testing_loss_list = list()
-mean_loss = []
+mean_loss = list()
+xyz_loss = []
 
 iter_num = 0
 for epoch in range(15):
