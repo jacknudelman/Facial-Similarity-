@@ -155,8 +155,8 @@ plt.plot(testing_loss_list)
 plt.show()
 
 
-
-def compute_test_loss(net) :
+def compute_test_loss(net):
+    
     transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
     face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=transformation)
