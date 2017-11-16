@@ -1,5 +1,5 @@
-
-# TODO when do I have to set to 0 or 1
+import matplotlib
+matplotlib.use('Agg')
 from data_extraction import *
 import torch
 from torch.autograd import Variable
@@ -9,6 +9,7 @@ from torchvision import transforms, utils
 from torch.utils.data import Dataset, DataLoader
 
 
+# TODO when do I have to set to 0 or 1
 
 
 class Net(nn.Module):
