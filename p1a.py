@@ -136,7 +136,7 @@ def compute_test_loss(net):
 
     return running_loss
 
-net = Net(12).cuda()
+net = Net(20).cuda()
 
 transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
@@ -156,8 +156,7 @@ mean_loss = list()
 xyz_loss = []
 
 iter_num = 0
-numPlots = 1
-for epoch in range(1):
+for epoch in range(10):
     print epoch
 # graph stuff
         # set the variable for pltting to 0
@@ -183,7 +182,6 @@ for epoch in range(1):
 
         iter_num += 1
         if iter_num % 55 == 0:
-            numPlots += 1
             training_loss_list.append(running_training_loss)
             t = compute_test_loss(net)
             testing_loss_list.append(t)
