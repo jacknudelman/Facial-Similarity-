@@ -103,6 +103,33 @@ def show_batch(sample_batch):
     plt.show()
 
 
+def compute_test_loss(net):
+
+    transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
+
+    face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=transformation)
+
+    # global batchSize
+    dataloader = DataLoader(face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
+
+    criterion = nn.BCELoss()
+
+    running_loss = 0
+
+    for sample_batch in dataloader:
+        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
+        target = sample_batch['label']
+        target = np.array([float(i) for i in target])
+        target = torch.from_numpy(target).view(net.batchSize, -1)
+        target = target.type(torch.FloatTensor)
+        target = Variable(target, requires_grad=False)
+
+        loss = criterion(out, target)
+        running_loss += loss.data[0]
+        net.zero_grad()
+
+    return running_loss
+
 net = Net(12).cuda()
 
 transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
@@ -153,34 +180,6 @@ plt.plot(mean_loss)
 plt.plot(training_loss_list)
 plt.plot(testing_loss_list)
 plt.show()
-
-
-def compute_test_loss(net):
-    
-    transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
-
-    face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=transformation)
-
-    # global batchSize
-    dataloader = DataLoader(face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-
-    criterion = nn.BCELoss()
-
-    running_loss = 0
-
-    for sample_batch in dataloader:
-        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
-        target = sample_batch['label']
-        target = np.array([float(i) for i in target])
-        target = torch.from_numpy(target).view(net.batchSize, -1)
-        target = target.type(torch.FloatTensor)
-        target = Variable(target, requires_grad=False)
-
-        loss = criterion(out, target)
-        running_loss += loss.data[0]
-        net.zero_grad()
-
-    return running_loss
 
 
 
