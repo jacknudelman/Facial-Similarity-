@@ -124,12 +124,12 @@ def compute_test_loss(net):
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         # print target.shape
-        target = torch.from_numpy(target).view(net.batchSize, -1)
+        target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False).cuda()
 
         loss = criterion(out, target)
-        print loss.size()
+        # print loss.size()
         running_loss += loss.data[0]
         net.zero_grad()
 
@@ -178,7 +178,7 @@ for epoch in range(15):
         xyz_loss.append(loss.data[0])
 
         iter_num += 1
-        if iter_num % 2 == 0:
+        if iter_num % 55 == 0:
             training_loss_list.append(running_training_loss)
             testing_loss_list.append(compute_test_loss(net))
             running_training_loss = 0
