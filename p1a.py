@@ -192,9 +192,7 @@ fig1 = plt.plot(mean_loss)
 fig2 = plt.plot(training_loss_list)
 fig3 = plt.plot(testing_loss_list)
 # plt.show()
-plt.savefig(fig1, 'fig1')
-plt.savefig(fig1, 'fig2')
-plt.savefig(fig1, 'fig3')
+plt.savefig('fig')
 
 
 
