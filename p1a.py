@@ -201,7 +201,7 @@ fig2 = plt.plot(training_loss_list)
 plt.savefig('fig2')
 plt.clf()
 fig3 = plt.plot(testing_loss_list)
-plt.savefig('fig1')
+plt.savefig('fig3')
 plt.clf()
 
 
