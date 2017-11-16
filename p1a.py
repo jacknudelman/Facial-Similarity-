@@ -56,7 +56,7 @@ class Net(nn.Module):
 def forward1(net, x):
 
     x = net.conv1(x)
-    print x.size()
+    # x.size()
     x = F.relu(x)
     x = net.batchNorm1(x)
     x = net.maxPool(x)
