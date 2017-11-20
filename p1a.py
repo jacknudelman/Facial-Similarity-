@@ -206,7 +206,7 @@ for epoch in range(4):
         print
         print out.data[0]
         print
-        print out
+        print out[0]
         print
         print target
         for i in range(net.batchSize):
