@@ -184,17 +184,16 @@ criterion = nn.BCELoss()
 training_loss_list = list()
 testing_loss_list = list()
 average_testing_loss = list()
-xyz_loss = []
 
 iter_num = 0
 num_correctly_matched = 0
+total_num_correctly_matched = 0
+total_num_imgs = 0
 for epoch in range(4):
     print epoch
     num_images = 0
-# graph stuff
-        # set the variable for pltting to 0
+
     for sample_batch in train_dataloader:
-        # print Variable(sample_batch['image1'], requires_grad=True) .size()
         if ('--augment' in sys.argv):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
@@ -228,7 +227,10 @@ for epoch in range(4):
                 average_testing_loss.append(np.average(testing_loss_list[-10:]))
             # mean_loss.append(np.mean(xyz_loss[-55:]))
     print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
+    total_num_correctly_matched += num_correctly_matched
+    total_num_imgs += num_images
     num_correctly_matched = 0
+    num_images = 0
 
 
 torch.save(net, 'net_state')
