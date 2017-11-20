@@ -154,7 +154,7 @@ iter_num = 0
 num_correctly_matched = 0
 total_num_correctly_matched = 0
 total_num_imgs = 0
-for epoch in range(3):
+for epoch in range(2):
     print epoch
     num_images = 0
 
