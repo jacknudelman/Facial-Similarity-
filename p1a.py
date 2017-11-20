@@ -145,7 +145,6 @@ def compute_test_loss(net, dataloader):
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         total_imgs += target.shape[0]
-        print 'target shape is ', target.shape
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False).cuda()
@@ -153,8 +152,7 @@ def compute_test_loss(net, dataloader):
         loss = criterion(out, target)
         running_loss += loss.data[0]
         net.zero_grad()
-    print 'total images = ', total_imgs
-    return running_loss / 1000
+    return running_loss / total_imgs
 
 def create_transform_list():
     possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
@@ -183,47 +181,50 @@ learning_rate = 1e-6
 optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 criterion = nn.BCELoss()
 
-running_training_loss = 0
 training_loss_list = list()
 testing_loss_list = list()
-mean_loss = list()
+average_testing_loss = list()
 xyz_loss = []
 
 iter_num = 0
+num_correctly_matched = 0
 for epoch in range(4):
     print epoch
+    num_images = 0
 # graph stuff
         # set the variable for pltting to 0
     for sample_batch in train_dataloader:
-        # print Variable(sample_batch['image1'], requires_grad=True).cuda().size()
+        # print Variable(sample_batch['image1'], requires_grad=True) .size()
         if ('--augment' in sys.argv):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
         out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
-        # print target.shape
+        for i in range(net.batchSize):
+            num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out[i] >= 0.5) or (target[i] == 0 and out[i] < 0.5)) else num_correctly_matched
+        num_images += net.batchSize
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False).cuda()
 
 
         loss = criterion(out, target)
-        running_training_loss += loss.data[0]
         net.zero_grad()
-
         loss.backward()
         optimizer.step()
-        # xyz_loss.append(loss.data[0])
 
-
+        training_loss_list.append(loss.data[0])
         iter_num += 1
         if iter_num % 2 != 0:
-            training_loss_list.append(running_training_loss / 2)
-            running_training_loss = 0
+            # training_loss_list.append(running_training_loss / 2)
+            # running_training_loss = 0
             t = compute_test_loss(net, test_dataloader)
             testing_loss_list.append(t)
+            if iter_num % 10 == 0:
+                average_testing_loss.append(np.average(testing_loss_list[-10:]))
             # mean_loss.append(np.mean(xyz_loss[-55:]))
+    print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched/ num_images)
 
 
 
@@ -235,13 +236,19 @@ print len(testing_loss_list)
 # fig1 = plt.plot(mean_loss)
 # plt.savefig('fig1')
 # plt.clf()
-fig2 = plt.plot(training_loss_list)
-plt.savefig('fig2')
-plt.title('training loss')
-plt.clf()
-fig3 = plt.plot(testing_loss_list)
-plt.savefig('fig3')
-plt.title('testing loss')
+x_training = np.linspace(0, 1, iter_num)
+plt.plot(x_training, training_loss_list)
+# plt.savefig('fig2')
+# plt.title('training loss')
+# plt.clf()
+x_raw_testing = np.linspace(0, 2, iter_num)
+plt.plot(x_raw_testing, testing_loss_list)
+
+x_clean_testing = np.linspace(0, 10, iter_num)
+plt.plot(x_clean_testing, average_testing_loss)
+
+plt.savefig('fig')
+plt.title('losses')
 
 
 # for i_batch, sample_batch in enumerate(dataloader):
@@ -252,8 +259,8 @@ plt.title('testing loss')
 
 
 
-# input1 = Variable(torch.randn(1, 12, 128, 128), requires_grad=True).cuda()
-# input2 = Variable(torch.randn(1, 12, 128, 128), requires_grad=True).cuda()
+# input1 = Variable(torch.randn(1, 12, 128, 128), requires_grad=True)
+# input2 = Variable(torch.randn(1, 12, 128, 128), requires_grad=True)
 #
 # out = net(input1, input2)
 # loss = net.loss(out, sample['label'])
