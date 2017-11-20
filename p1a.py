@@ -204,6 +204,7 @@ for epoch in range(4):
         out_arr = out.data.cpu().numpy()
         for i in range(net.batchSize):
             num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out_arr[i] >= 0.5) or (target[i] == 0 and out_arr[i] < 0.5)) else num_correctly_matched
+        print 'num_correctly_matched = ', num_correctly_matched
         num_images += net.batchSize
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
@@ -225,7 +226,7 @@ for epoch in range(4):
             if iter_num % 10 == 0:
                 average_testing_loss.append(np.average(testing_loss_list[-10:]))
             # mean_loss.append(np.mean(xyz_loss[-55:]))
-    print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched/ num_images)
+    print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images)
 
 
 

@@ -1,7 +1,6 @@
 *.tgz
 .DS_Store
 *.pyc
-playground
 small_sample.txt
 Applications/
 lfw/
