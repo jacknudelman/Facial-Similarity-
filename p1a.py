@@ -140,7 +140,7 @@ def compute_test_loss(net, dataloader):
     iter_num = 1
     total_imgs = 0
     for sample_batch in dataloader:
-        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False)).cuda()
+        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         total_imgs += target.shape[0]
@@ -167,16 +167,7 @@ def create_transform_list():
     return flat
 
 net = Net(40).cuda()
-#
-# if ('--augment' in sys.argv):
-#     possible_data_augmenters = [[transforms.randRandomHorizontalFlip], [transforms.randRandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
-#     trans = list()
-#     num_additional_transformers = random.randint(0,len(possible_data_augmenters))
-#     trans.append(transforms.Scale((128, 128)))
-#
-#     trans.append(transforms.ToTensor())
-#     train_transformation = transforms.Compose(trans)
-# else:
+
 train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
 train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=train_transformation)
@@ -206,7 +197,7 @@ for epoch in range(4):
         if ('--augment' in sys.argv):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
-        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda()).cuda()
+        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         # print target.shape
