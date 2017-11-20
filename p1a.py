@@ -167,7 +167,7 @@ def create_transform_list():
     return flat
 
 net = Net(40).cuda()
-
+print 'created net'
 train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
 train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=train_transformation)
@@ -176,7 +176,7 @@ train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuf
 test_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=test_transformation)
 test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-
+print 'got datasets'
 learning_rate = 1e-6
 optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 criterion = nn.BCELoss()
