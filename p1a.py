@@ -201,10 +201,9 @@ for epoch in range(4):
         out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
-        out_np = np.array(out)
         print type(target)
-        print 
-        print out_np[3]
+        print
+        print out[3]
         print
         print target[3]
         for i in range(net.batchSize):
