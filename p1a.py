@@ -203,7 +203,7 @@ for epoch in range(4):
         print '&&&&&', out.data[0] > 0
         # out_arr = out.data.cpu().numpy()
         for i in range(net.batchSize):
-            num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.index_select(i) >= 0.5) or (target[i] == 0 and out.index_select(i) < 0.5)) else num_correctly_matched
+            num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.index_select(0,i) >= 0.5) or (target[i] == 0 and out.index_select(0,i) < 0.5)) else num_correctly_matched
         print 'num_correctly_matched = ', num_correctly_matched
         num_images += target.shape[0]
         target = torch.from_numpy(target).view(target.shape[0], -1)
