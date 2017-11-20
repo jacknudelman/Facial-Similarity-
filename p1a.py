@@ -10,7 +10,6 @@ from torch.utils.data import Dataset, DataLoader
 import sys
 
 # TODO when do I have to set to 0 or 1
-# TODO add translation of image
 
 class Net(nn.Module):
 
@@ -82,40 +81,6 @@ class Net(nn.Module):
         for s in size:
             num_features *= s
         return num_features
-
-
-# def forward1(net, x):
-#
-#     x = net.conv1(x)
-#     # x.size()
-#     x = F.relu(x)
-#     x = net.batchNorm1(x)
-#     x = net.maxPool(x)
-#
-#     x = net.conv2(x)
-#     x = F.relu(x)
-#     x = net.batchNorm2(x)
-#     x = net.maxPool(x)
-#
-#     x = net.conv3(x)
-#     x = F.relu(x)
-#     x = net.batchNorm3(x)
-#     x = net.maxPool(x)
-#
-#     x = net.conv4(x)
-#     x = F.relu(x)
-#     x = net.batchNorm4(x)
-#
-#     # flatten
-#     x = x.view(-1, net.num_flat_features(x))
-#
-#     x = net.linearLayer1(x)
-#
-#     x = F.relu(x)
-#     x = net.batchNorm5(x)
-#     # return x.size()
-#
-#     return x
 
 def show_batch(sample_batch):
     images_batch1 = sample_batch['image1']
@@ -237,6 +202,7 @@ for epoch in range(4):
     num_correctly_matched = 0
     num_images = 0
 
+print 'train accuracy on epoch ', epoch,  ' is ', float(total_num_correctly_matched)/ total_num_correctly_matched
 
 torch.save(net, 'net_state')
 
