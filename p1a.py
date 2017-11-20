@@ -154,7 +154,7 @@ iter_num = 0
 num_correctly_matched = 0
 total_num_correctly_matched = 0
 total_num_imgs = 0
-for epoch in range(4):
+for epoch in range(3):
     print epoch
     num_images = 0
 
@@ -174,7 +174,7 @@ for epoch in range(4):
         # out_arr = out.data.cpu().numpy()
         for i in range(net.batchSize):
             num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)) else num_correctly_matched
-        print 'num_correctly_matched = ', num_correctly_matched
+        # print 'num_correctly_matched = ', num_correctly_matched
         num_images += target.shape[0]
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
@@ -208,19 +208,20 @@ torch.save(net, 'net_state')
 
 print len(training_loss_list)
 print len(testing_loss_list)
+print len(average_testing_loss)
 # print len(mean_loss)
 # fig1 = plt.plot(mean_loss)
 # plt.savefig('fig1')
 # plt.clf()
-x_training = np.linspace(0, 1, iter_num)
+x_training = np.linspace(0, iter_num, len(training_loss_list))
 plt.plot(x_training, training_loss_list)
 # plt.savefig('fig2')
 # plt.title('training loss')
 # plt.clf()
-x_raw_testing = np.linspace(0, 2, iter_num)
+x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
 plt.plot(x_raw_testing, testing_loss_list)
 
-x_clean_testing = np.linspace(0, 10, iter_num)
+x_clean_testing = np.linspace(0, iter_num, len(average_testing_loss))
 plt.plot(x_clean_testing, average_testing_loss)
 
 plt.savefig('fig')
