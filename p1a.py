@@ -226,7 +226,7 @@ for epoch in range(4):
             if iter_num % 10 == 0:
                 average_testing_loss.append(np.average(testing_loss_list[-10:]))
             # mean_loss.append(np.mean(xyz_loss[-55:]))
-    print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images)
+    print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
 
 
 
