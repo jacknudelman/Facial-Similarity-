@@ -145,6 +145,7 @@ def compute_test_loss(net, dataloader):
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         total_imgs += target.shape[0]
+        print 'target shape is ', target.shape
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
         target = Variable(target, requires_grad=False).cuda()
@@ -152,7 +153,7 @@ def compute_test_loss(net, dataloader):
         loss = criterion(out, target)
         running_loss += loss.data[0]
         net.zero_grad()
-    print total_imgs
+    print 'total images = ', total_imgs
     return running_loss / 1000
 
 def create_transform_list():
