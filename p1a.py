@@ -140,7 +140,7 @@ def compute_test_loss(net, dataloader):
     iter_num = 1
     total_imgs = 0
     for sample_batch in dataloader:
-        out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
+        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False)).cuda()
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         total_imgs += target.shape[0]
@@ -166,7 +166,7 @@ def create_transform_list():
 
     return flat
 
-net = Net(40)
+net = Net(40).cuda()
 #
 # if ('--augment' in sys.argv):
 #     possible_data_augmenters = [[transforms.randRandomHorizontalFlip], [transforms.randRandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
@@ -202,11 +202,11 @@ for epoch in range(4):
 # graph stuff
         # set the variable for pltting to 0
     for sample_batch in train_dataloader:
-        # print Variable(sample_batch['image1'], requires_grad=True).size()
+        # print Variable(sample_batch['image1'], requires_grad=True).cuda().size()
         if ('--augment' in sys.argv):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
-        out = net(Variable(sample_batch['image1'], requires_grad=True), Variable(sample_batch['image2'], requires_grad=True))
+        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         # print target.shape
@@ -258,8 +258,8 @@ plt.title('testing loss')
 
 
 
-# input1 = Variable(torch.randn(1, 12, 128, 128), requires_grad=True)
-# input2 = Variable(torch.randn(1, 12, 128, 128), requires_grad=True)
+# input1 = Variable(torch.randn(1, 12, 128, 128), requires_grad=True).cuda()
+# input2 = Variable(torch.randn(1, 12, 128, 128), requires_grad=True).cuda()
 #
 # out = net(input1, input2)
 # loss = net.loss(out, sample['label'])
