@@ -202,6 +202,8 @@ for epoch in range(4):
         target = np.array([float(i) for i in target])
         print out.data[0][0]
         print type(out.data[0][0])
+        print out.data[0][1]
+        print out.data[1][0]
         # out_arr = out.data.cpu().numpy()
         for i in range(net.batchSize):
             num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.index_select(0,i) >= 0.5) or (target[i] == 0 and out.index_select(0,i) < 0.5)) else num_correctly_matched
