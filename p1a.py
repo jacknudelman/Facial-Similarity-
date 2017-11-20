@@ -202,10 +202,13 @@ for epoch in range(4):
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         print type(target)
+        print type(out.data[0])
         print
-        print out[3]
+        print out.data[0]
         print
-        print target[3]
+        print out
+        print
+        print target
         for i in range(net.batchSize):
             num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out_np[i] >= 0.5) or (target[i] == 0 and out_np[i] < 0.5)) else num_correctly_matched
         num_images += net.batchSize
