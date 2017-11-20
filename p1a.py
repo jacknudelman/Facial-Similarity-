@@ -147,7 +147,7 @@ def compute_test_loss(net, dataloader):
         total_imgs += target.shape[0]
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
-        target = Variable(target, requires_grad=False)
+        target = Variable(target, requires_grad=False).cuda()
 
         loss = criterion(out, target)
         running_loss += loss.data[0]
@@ -204,7 +204,8 @@ for epoch in range(4):
         # print target.shape
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
-        target = Variable(target, requires_grad=False)
+        target = Variable(target, requires_grad=False).cuda()
+
 
         loss = criterion(out, target)
         running_training_loss += loss.data[0]
