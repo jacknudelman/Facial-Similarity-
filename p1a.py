@@ -162,7 +162,7 @@ for epoch in range(3):
         if ('--augment' in sys.argv):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
-        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
+        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         # print out
@@ -194,7 +194,9 @@ for epoch in range(3):
             t = compute_test_loss(net, test_dataloader)
             testing_loss_list.append(t)
             if iter_num % 10 == 0:
-                average_testing_loss.append(np.average(testing_loss_list[-10:]))
+                av = np.average(testing_loss_list[-10:])
+                print av
+                average_testing_loss.append(av)
 
     print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
     total_num_correctly_matched += num_correctly_matched

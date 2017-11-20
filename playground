@@ -62,17 +62,17 @@ def shift_image(im):
     return x
 
 def print_graphs():
-    img = cv2.imread('fig2.png')
+    img = cv2.imread('fig.png')
     plt.title('train loss')
     plt.imshow(img)
     plt.show()
     plt.clf()
 #
-    img = cv2.imread('fig3.png')
-    plt.title('test loss')
-    plt.imshow(img)
-    plt.show()
-    plt.clf()
+    # img = cv2.imread('fig3.png')
+    # plt.title('test loss')
+    # plt.imshow(img)
+    # plt.show()
+    # plt.clf()
 
 def create_transform_list():
     possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
@@ -91,5 +91,5 @@ def create_transform_list():
 # create_transform_list()
 # num_correctly_matched = 0
 # num_correctly_matched +=1 if (3 == 1 and 4 >= 0.5) or (3== 0 and 4 < 0.5) else += 0
-print np.linspace(0, 3, 5)
-# print_graphs()
+# print np.linspace(0, 3, 5)
+print_graphs()
