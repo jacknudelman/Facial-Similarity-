@@ -210,7 +210,7 @@ for epoch in range(4):
         print
         print target
         for i in range(net.batchSize):
-            num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out_np[i] >= 0.5) or (target[i] == 0 and out_np[i] < 0.5)) else num_correctly_matched
+            num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i] >= 0.5) or (target[i] == 0 and out.data[i] < 0.5)) else num_correctly_matched
         num_images += net.batchSize
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
