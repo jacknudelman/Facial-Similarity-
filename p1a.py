@@ -202,7 +202,7 @@ for epoch in range(4):
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         out_np = np.array(out)
-        print type(out_np)
+        print type(target)
         print out_np[3]
         print target[3]
         for i in range(net.batchSize):
