@@ -7,10 +7,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms, utils
 from torch.utils.data import Dataset, DataLoader
-
+import sys
 
 # TODO when do I have to set to 0 or 1
-
+# TODO add translation of image
 
 class Net(nn.Module):
 
@@ -35,10 +35,39 @@ class Net(nn.Module):
 
         self.batchNorm5 = nn.BatchNorm2d(1024)
 
+    def forward1(self, x):
+
+        x = self.conv1(x)
+        # x.size()
+        x = F.relu(x)
+        x = self.batchNorm1(x)
+        x = self.maxPool(x)
+
+        x = self.conv2(x)
+        x = F.relu(x)
+        x = self.batchNorm2(x)
+        x = self.maxPool(x)
+
+        x = self.conv3(x)
+        x = F.relu(x)
+        x = self.batchNorm3(x)
+        x = self.maxPool(x)
+
+        x = self.conv4(x)
+        x = F.relu(x)
+        x = self.batchNorm4(x)
+
+        # flatten
+        x = x.view(-1, self.num_flat_features(x))
+
+        x = self.linearLayer1(x)
+
+        x = F.relu(x)
+        x = self.batchNorm5(x)
 
     def forward(self, img1, img2):
-        img1 = forward1(self, img1)
-        img2 = forward1(self, img2)
+        img1 = self.forward1(img1)
+        img2 = self.forward1(img2)
 
         z = torch.cat((img1, img2), 1)
         z = self.linearLayer2(z)
@@ -54,38 +83,38 @@ class Net(nn.Module):
         return num_features
 
 
-def forward1(net, x):
-
-    x = net.conv1(x)
-    # x.size()
-    x = F.relu(x)
-    x = net.batchNorm1(x)
-    x = net.maxPool(x)
-
-    x = net.conv2(x)
-    x = F.relu(x)
-    x = net.batchNorm2(x)
-    x = net.maxPool(x)
-
-    x = net.conv3(x)
-    x = F.relu(x)
-    x = net.batchNorm3(x)
-    x = net.maxPool(x)
-
-    x = net.conv4(x)
-    x = F.relu(x)
-    x = net.batchNorm4(x)
-
-    # flatten
-    x = x.view(-1, net.num_flat_features(x))
-
-    x = net.linearLayer1(x)
-
-    x = F.relu(x)
-    x = net.batchNorm5(x)
-    # return x.size()
-
-    return x
+# def forward1(net, x):
+#
+#     x = net.conv1(x)
+#     # x.size()
+#     x = F.relu(x)
+#     x = net.batchNorm1(x)
+#     x = net.maxPool(x)
+#
+#     x = net.conv2(x)
+#     x = F.relu(x)
+#     x = net.batchNorm2(x)
+#     x = net.maxPool(x)
+#
+#     x = net.conv3(x)
+#     x = F.relu(x)
+#     x = net.batchNorm3(x)
+#     x = net.maxPool(x)
+#
+#     x = net.conv4(x)
+#     x = F.relu(x)
+#     x = net.batchNorm4(x)
+#
+#     # flatten
+#     x = x.view(-1, net.num_flat_features(x))
+#
+#     x = net.linearLayer1(x)
+#
+#     x = F.relu(x)
+#     x = net.batchNorm5(x)
+#     # return x.size()
+#
+#     return x
 
 def show_batch(sample_batch):
     images_batch1 = sample_batch['image1']
@@ -104,46 +133,58 @@ def show_batch(sample_batch):
     plt.show()
 
 
-def compute_test_loss(net):
-
-    transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
-
-    face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=transformation)
-
-    # global batchSize
-    dataloader = DataLoader(face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-
+def compute_test_loss(net, dataloader):
     criterion = nn.BCELoss()
 
     running_loss = 0
-
-
+    iter_num = 1
+    total_imgs = 0
     for sample_batch in dataloader:
-        # print 'in test set'
-        # print Variable(sample_batch['image1'], requires_grad=True).size()
-        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
+        out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
-        # print target.shape
+        total_imgs += target.shape[0]
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
-        target = Variable(target, requires_grad=False).cuda()
+        target = Variable(target, requires_grad=False)
 
         loss = criterion(out, target)
-        # print loss.size()
         running_loss += loss.data[0]
         net.zero_grad()
-
+    print total_imgs
     return running_loss / 1000
 
-net = Net(40).cuda()
+def create_transform_list():
+    possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
+    trans = list()
+    trans.append([transforms.Scale((128, 128))])
+    num_additional_transformers = random.randint(1,len(possible_data_augmenters))
+    indices = np.random.choice(len(possible_data_augmenters), num_additional_transformers, replace=False)
+    trans.extend([possible_data_augmenters[i] for i in indices])
+    trans.append([transforms.ToTensor()])
+    flat = [x for sublist in trans for x in sublist]
 
-transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
+    return flat
 
-face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=transformation)
+net = Net(40)
+#
+# if ('--augment' in sys.argv):
+#     possible_data_augmenters = [[transforms.randRandomHorizontalFlip], [transforms.randRandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
+#     trans = list()
+#     num_additional_transformers = random.randint(0,len(possible_data_augmenters))
+#     trans.append(transforms.Scale((128, 128)))
+#
+#     trans.append(transforms.ToTensor())
+#     train_transformation = transforms.Compose(trans)
+# else:
+train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
+train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=train_transformation)
+train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
-dataloader = DataLoader(face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
+test_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
+test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=test_transformation)
+test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
 learning_rate = 1e-6
 optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
@@ -156,19 +197,22 @@ mean_loss = list()
 xyz_loss = []
 
 iter_num = 0
-for epoch in range(10):
+for epoch in range(4):
     print epoch
 # graph stuff
         # set the variable for pltting to 0
-    for sample_batch in dataloader:
+    for sample_batch in train_dataloader:
         # print Variable(sample_batch['image1'], requires_grad=True).size()
-        out = net(Variable(sample_batch['image1'], requires_grad=True).cuda(), Variable(sample_batch['image2'], requires_grad=True).cuda())
+        if ('--augment' in sys.argv):
+            if random.uniform(0.0, 1.0) > 0.3:
+                train_face_dataset.transformation = create_transform_list()
+        out = net(Variable(sample_batch['image1'], requires_grad=True), Variable(sample_batch['image2'], requires_grad=True))
         target = sample_batch['label']
         target = np.array([float(i) for i in target])
         # print target.shape
         target = torch.from_numpy(target).view(target.shape[0], -1)
         target = target.type(torch.FloatTensor)
-        target = Variable(target, requires_grad=False).cuda()
+        target = Variable(target, requires_grad=False)
 
         loss = criterion(out, target)
         running_training_loss += loss.data[0]
@@ -183,7 +227,7 @@ for epoch in range(10):
         if iter_num % 2 != 0:
             training_loss_list.append(running_training_loss / 2)
             running_training_loss = 0
-            t = compute_test_loss(net)
+            t = compute_test_loss(net, test_dataloader)
             testing_loss_list.append(t)
             # mean_loss.append(np.mean(xyz_loss[-55:]))
 
