@@ -172,8 +172,8 @@ for epoch in range(3):
         # print out.data[1][0]
         # print out.data[2][0]
         # out_arr = out.data.cpu().numpy()
-        for i in range(net.batchSize):
-            num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)) else num_correctly_matched
+        # for i in range(target.shape[0]):
+            # num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)) else num_correctly_matched
         # print 'num_correctly_matched = ', num_correctly_matched
         num_images += target.shape[0]
         target = torch.from_numpy(target).view(target.shape[0], -1)
@@ -198,13 +198,14 @@ for epoch in range(3):
                 print av
                 average_testing_loss.append(av)
 
-    print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
-    total_num_correctly_matched += num_correctly_matched
-    total_num_imgs += num_images
-    num_correctly_matched = 0
-    num_images = 0
-
-print 'train accuracy on epoch ', epoch,  ' is ', float(total_num_correctly_matched)/ total_num_correctly_matched
+    print num_images
+    # print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
+#     total_num_correctly_matched += num_correctly_matched
+#     total_num_imgs += num_images
+#     num_correctly_matched = 0
+#     num_images = 0
+#
+# print 'train accuracy on epoch ', epoch,  ' is ', float(total_num_correctly_matched)/ total_num_correctly_matched
 
 torch.save(net, 'net_state')
 
