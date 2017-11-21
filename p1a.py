@@ -112,11 +112,11 @@ def compute_test_loss(net, dataloader):
         target = Variable(labels, requires_grad=False).cuda()
 
         loss = criterion(out, target)
-        print 'loss = ', loss.data[0]
+        # print 'loss = ', loss.data[0]
         iter_num += 1
         running_loss += loss.data[0]
         net.zero_grad()
-        print running_loss / iter_num
+        # print running_loss / iter_num
     return running_loss / iter_num
 
 def create_transform_list():
@@ -178,7 +178,7 @@ for epoch in range(2):
 
 
         loss = criterion(out, target)
-        print 'train loss = ', loss
+        # print 'train loss = ', loss
         net.zero_grad()
         loss.backward()
         optimizer.step()
@@ -191,6 +191,7 @@ for epoch in range(2):
             t = compute_test_loss(net, test_dataloader)
             testing_loss_list.append(t)
             if iter_num % 10 == 0:
+                print iter_num
                 av = np.average(testing_loss_list[-10:])
                 print av
                 average_testing_loss.append(av)
