@@ -112,6 +112,7 @@ def compute_test_loss(net, dataloader):
         target = Variable(labels, requires_grad=False).cuda()
 
         loss = criterion(out, target)
+        print 'loss' = loss
         running_loss += loss.data[0]
         net.zero_grad()
     return running_loss / total_imgs
@@ -160,21 +161,11 @@ for epoch in range(2):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
-        # target = sample_batch['label']
-        # target = np.array([float(i) for i in target])
-        # print out
-        # print out.data[0][0]
-        # print type(out.data[0][0])
-        # # print out.data[0][1]
-        # print out.data[1][0]
-        # print out.data[2][0]
-        # out_arr = out.data.cpu().numpy()
         # for i in range(target.shape[0]):
             # num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)) else num_correctly_matched
         # print 'num_correctly_matched = ', num_correctly_matched
-        labels = sample_batch['label'].type(torch.DoubleTensor)
-	labels = labels.view(2, 1)
-        print type(labels)
+        labels = sample_batch['label'].type(torch.FloatTensor)
+        labels = labels.view(-1, 1)
         target = Variable(labels, requires_grad=False).cuda()
         # print target.shape
         # num_images += target.shape[0]
