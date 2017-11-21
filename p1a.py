@@ -175,8 +175,8 @@ for epoch in range(2):
         # for i in range(target.shape[0]):
             # num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)) else num_correctly_matched
         # print 'num_correctly_matched = ', num_correctly_matched
-        print type(sample_batch['label'])
-        target = Variable(sample_batch['label'], requires_grad=False).cuda()
+        labels = sample_batch['label'].type(torch.DoubleTensor)
+        target = Variable(labels, requires_grad=False).cuda()
         # print target.shape
         # num_images += target.shape[0]
         # target = torch.from_numpy(target).view(target.shape[0], -1)
