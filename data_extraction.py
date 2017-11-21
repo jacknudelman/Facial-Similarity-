@@ -57,7 +57,7 @@ class FaceDataset(Dataset):
 
 		# label_tranform = transforms.Compose([transforms.ToTensor()])
 		# label_tran = label_tranform(label)
-		print label.shape
+		label = int(label)
 		row = {'image1': image1_transformed, 'image2': image2_transformed, 'label': label_tran}
 
 		return row
