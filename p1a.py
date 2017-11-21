@@ -163,8 +163,8 @@ for epoch in range(2):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
-        target = sample_batch['label']
-        target = np.array([float(i) for i in target])
+        # target = sample_batch['label']
+        # target = np.array([float(i) for i in target])
         # print out
         # print out.data[0][0]
         # print type(out.data[0][0])
@@ -175,10 +175,13 @@ for epoch in range(2):
         # for i in range(target.shape[0]):
             # num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)) else num_correctly_matched
         # print 'num_correctly_matched = ', num_correctly_matched
-        num_images += target.shape[0]
-        target = torch.from_numpy(target).view(target.shape[0], -1)
-        target = target.type(torch.FloatTensor)
-        target = Variable(target, requires_grad=False).cuda()
+        print type(sample_batch['label'])
+        target = Variable(sample_batch['label'], requires_grad=False).cuda()
+        print target.shape
+        # num_images += target.shape[0]
+        # target = torch.from_numpy(target).view(target.shape[0], -1)
+        # target = target.type(torch.FloatTensor)
+        # target = Variable(target, requires_grad=False).cuda()
 
 
         loss = criterion(out, target)
