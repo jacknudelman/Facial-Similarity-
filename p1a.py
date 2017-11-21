@@ -166,6 +166,7 @@ for epoch in range(2):
         # print 'num_correctly_matched = ', num_correctly_matched
         labels = sample_batch['label'].type(torch.FloatTensor)
         labels = labels.view(-1, 1)
+        num_images += labels.size()[0]
         target = Variable(labels, requires_grad=False).cuda()
         # print target.shape
         # num_images += target.shape[0]
@@ -195,9 +196,9 @@ for epoch in range(2):
     print num_images
     # print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
 #     total_num_correctly_matched += num_correctly_matched
-#     total_num_imgs += num_images
-#     num_correctly_matched = 0
-#     num_images = 0
+    # total_num_imgs += num_images
+    # num_correctly_matched = 0
+    # num_images = 0
 #
 # print 'train accuracy on epoch ', epoch,  ' is ', float(total_num_correctly_matched)/ total_num_correctly_matched
 
