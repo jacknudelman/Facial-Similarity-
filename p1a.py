@@ -103,7 +103,7 @@ def compute_test_loss(net, dataloader):
     criterion = nn.BCELoss()
 
     running_loss = 0
-    iter_num = 1
+    iter_num = 0
     total_imgs = 0
     for sample_batch in dataloader:
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
@@ -112,10 +112,12 @@ def compute_test_loss(net, dataloader):
         target = Variable(labels, requires_grad=False).cuda()
 
         loss = criterion(out, target)
-        print 'loss = ', loss
+        print 'loss = ', loss.data[0]
+        iter_num += 1
         running_loss += loss.data[0]
         net.zero_grad()
-    return running_loss / total_imgs
+        print running_loss / iter_num
+    return running_loss / iter_num
 
 def create_transform_list():
     possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
