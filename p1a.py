@@ -112,7 +112,7 @@ def compute_test_loss(net, dataloader):
         target = Variable(labels, requires_grad=False).cuda()
 
         loss = criterion(out, target)
-        print 'loss' = loss
+        print 'loss = ', loss
         running_loss += loss.data[0]
         net.zero_grad()
     return running_loss / total_imgs
@@ -175,6 +175,7 @@ for epoch in range(2):
 
 
         loss = criterion(out, target)
+        print 'train loss = ', loss
         net.zero_grad()
         loss.backward()
         optimizer.step()
