@@ -177,7 +177,7 @@ for epoch in range(2):
         # print 'num_correctly_matched = ', num_correctly_matched
         print type(sample_batch['label'])
         target = Variable(sample_batch['label'], requires_grad=False).cuda()
-        print target.shape
+        # print target.shape
         # num_images += target.shape[0]
         # target = torch.from_numpy(target).view(target.shape[0], -1)
         # target = target.type(torch.FloatTensor)
