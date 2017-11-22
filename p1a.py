@@ -179,7 +179,7 @@ for epoch in range(2):
         for i in range(target.size()[0]):
             if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
-        num_images += target.size()[0])
+        num_images += target.size()[0]
 
         loss = criterion(out, target)
         # print 'train loss = ', loss
