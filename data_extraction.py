@@ -52,9 +52,10 @@ class FaceDataset(Dataset):
 
 		label = self.faces_with_output[idx][2]
 
+		print 'about to apply transform'
 		image1_transformed = self.transform(image1)
 		image2_transformed = self.transform(image2)
-
+		print 'tranform applied'
 		# label_tranform = transforms.Compose([transforms.ToTensor()])
 		# label_tran = label_tranform(label)
 		label_tran = float(label)
