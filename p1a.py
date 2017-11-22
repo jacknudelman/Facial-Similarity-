@@ -126,7 +126,7 @@ def compute_test_loss(net, dataloader):
     return [(running_loss / iter_num), num_correctly_matched, num_images]
 
 def create_transform_list():
-    possible_data_augmenters = [[transforms.RandomHorizontalFlip()], [transforms.RandomHorizontalFlip()],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
+    possible_data_augmenters = [[transforms.RandomHorizontalFlip()], [transforms.RandomVerticalFlip()],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
     trans = list()
     trans.append([transforms.Scale((128, 128))])
     num_additional_transformers = random.randint(1,len(possible_data_augmenters))
@@ -134,8 +134,7 @@ def create_transform_list():
     trans.extend([possible_data_augmenters[i] for i in indices])
     trans.append([transforms.ToTensor()])
     flat = [x for sublist in trans for x in sublist]
-    print type(flat)
-    print type(flat[0])
+
     return flat
 
 net = Net(40).cuda()
@@ -175,7 +174,7 @@ for epoch in range(2):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
-
+        print 'got out'
         # print 'num_correctly_matched = ', num_correctly_matched
         labels = sample_batch['label'].type(torch.FloatTensor)
         labels = labels.view(-1, 1)

@@ -179,7 +179,6 @@ def create_transform_list():
     trans.extend([possible_data_augmenters[i] for i in indices])
     trans.append([transforms.ToTensor()])
     flat = [x for sublist in trans for x in sublist]
-    print flat
     return flat
 
 
