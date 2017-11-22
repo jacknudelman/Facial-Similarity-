@@ -58,8 +58,8 @@ class FaceDataset(Dataset):
 		# print 'tranform applied'
 		# label_tranform = transforms.Compose([transforms.ToTensor()])
 		# label_tran = label_tranform(label)
-		label_tran = float(label)
+		# label_tran = float(label)
 		# print 'labeltype2 ', type(label_tran)
-		row = {'image1': image1_transformed, 'image2': image2_transformed, 'label': label_tran}
+		row = {'image1': image1_transformed, 'image2': image2_transformed, 'label': label}
 
 		return row
