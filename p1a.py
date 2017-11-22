@@ -173,20 +173,20 @@ for epoch in range(2):
             file_name = 'aug_fig'
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
-        # out = net(Variable(sample_batch['image1']).cuda(), Variable(sample_batch['image2']).cuda())
+        out = net(Variable(sample_batch['image1']).cuda(), Variable(sample_batch['image2']).cuda())
         # print 'got out'
         # print 'num_correctly_matched = ', num_correctly_matched
-        print '$', type(sample_batch[0])
-        print '$$', type(sample_batch[1])
-        print type(sample_batch[2])
-        print '$$$', sample_batch[2]
-        break
-        labels = labels.view(-1, 1)
-        labels = sample_batch['label'].type(torch.FloatTensor)
+        # print '$', type(sample_batch[0])
+        # print '$$', type(sample_batch[1])
+        # print type(sample_batch[2])
+        # print '$$$', sample_batch[2]
+        # break
+        labels = torch.from_numpy(np.array([float(i) for i in each[2]])).view(-1, 1)
+        labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
-        for i in range(target.size()[0]):
-            if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
-                num_correctly_matched += 1
+        # for i in range(target.size()[0]):
+        #     if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
+        #         num_correctly_matched += 1
         num_images += target.size()[0]
 
         loss = criterion(out, target)
@@ -197,13 +197,13 @@ for epoch in range(2):
 
         training_loss_list.append(loss.data[0])
         iter_num += 1
-        if iter_num % 2 != 0:
+        # if iter_num % 2 != 0:
             # training_loss_list.append(running_training_loss / 2)
             # running_training_loss = 0
-            [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
-            testing_loss_list.append(testloss)
-            test_total_num_correctly_matched += test_num_correct
-            test_total_num_imgs += test_tested
+    [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
+    testing_loss_list.append(testloss)
+    test_total_num_correctly_matched += test_num_correct
+    test_total_num_imgs += test_tested
 
             # if iter_num % 9 == 0:
             #     print 'iter_num = ', iter_num

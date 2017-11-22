@@ -142,9 +142,9 @@ def training(cnn_model):
     for each in dataloader:
         image1 = Variable(each[0]).cuda()
         image2 = Variable(each[1]).cuda()
-        print '$', type(each[0])
-        print '$$', type(each[1])
-        print '$$$', each[2]
+        # print '$', type(each[0])
+        # print '$$', type(each[1])
+        # print '$$$', each[2]
         label1 = np.array([float(i) for i in each[2]])
         label1 = torch.from_numpy(label1).view(label1.shape[0], -1)
         label1 = label1.type(torch.FloatTensor)
@@ -202,7 +202,6 @@ all_testing_accuracy = list()
 for epoch in range(epochs):
     print epoch
     train_loss, train_accuracy = training(cnn_model)
-    break
     train_loss = train_loss
     train_accuracy = train_accuracy/100.0
     print("train loss", train_loss)
