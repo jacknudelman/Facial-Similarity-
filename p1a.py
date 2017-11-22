@@ -118,7 +118,7 @@ def compute_test_loss(net, dataloader):
                 num_correctly_matched += 1
         # print 'loss = ', loss.data[0]
         iter_num += 1
-        num_images += target.size()[0])
+        num_images += target.size()[0]
         running_loss += loss.data[0]
         net.zero_grad()
         # print running_loss / iter_num
