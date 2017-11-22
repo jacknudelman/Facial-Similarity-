@@ -114,7 +114,7 @@ def compute_test_loss(net, dataloader):
 
         loss = criterion(out, target)
         for i in range(target.size()[0]):
-            if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)):
+            if((target[i][0] == 1 and out.data[i][0] >= 0.5) or (target[i][0] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
         # print 'loss = ', loss.data[0]
         iter_num += 1
@@ -177,7 +177,7 @@ for epoch in range(2):
         num_images += labels.size()[0]
         target = Variable(labels, requires_grad=False).cuda()
         for i in range(target.size()[0]):
-            if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)):
+            if((target[i][0] == 1 and out.data[i][0] >= 0.5) or (target[i][0] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
         num_images += target.shape[0]
 
