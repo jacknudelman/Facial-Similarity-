@@ -137,7 +137,7 @@ def create_transform_list():
     return flat
 
 net = Net(40).cuda()
-print 'created net'
+# print 'created net'
 train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 
 train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transformation=train_transformation)
@@ -146,7 +146,7 @@ train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuf
 test_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transformation=test_transformation)
 test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-print 'got datasets'
+# print 'got datasets'
 learning_rate = 1e-6
 optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 criterion = nn.BCELoss()
@@ -170,15 +170,15 @@ for epoch in range(2):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda()).cuda()
-        for i in range(target.shape[0]):
-            if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)):
-                num_correctly_matched += 1
+        
         # print 'num_correctly_matched = ', num_correctly_matched
         labels = sample_batch['label'].type(torch.FloatTensor)
         labels = labels.view(-1, 1)
         num_images += labels.size()[0]
         target = Variable(labels, requires_grad=False).cuda()
-
+        for i in range(target.shape[0]):
+            if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)):
+                num_correctly_matched += 1
         num_images += target.shape[0]
 
         loss = criterion(out, target)
@@ -203,7 +203,7 @@ for epoch in range(2):
             #     print av
             #     average_testing_loss.append(av)
 
-    print num_images
+    # print num_images
     print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
     total_num_correctly_matched += num_correctly_matched
     total_num_imgs += num_images
@@ -229,8 +229,8 @@ plt.plot(x_training, training_loss_list)
 x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
 plt.plot(x_raw_testing, testing_loss_list)
 
-x_clean_testing = np.linspace(0, iter_num, len(average_testing_loss))
-plt.plot(x_clean_testing, average_testing_loss)
+# x_clean_testing = np.linspace(0, iter_num, len(average_testing_loss))
+# plt.plot(x_clean_testing, average_testing_loss)
 
 plt.savefig('fig')
 plt.title('losses')
