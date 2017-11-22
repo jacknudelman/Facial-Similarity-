@@ -44,7 +44,7 @@ class lfwDataset(Dataset):
         image2 = image2.convert('RGB')
 
         label = self.landmarks_frame[idx][2]
-        print 'labeltype ', type(label)
+        # print 'labeltype ', type(label)
         if self.transform is not None:
             image1 = self.transform(image1)
             image2 = self.transform(image2)
@@ -140,7 +140,9 @@ def training(cnn_model):
     for each in dataloader:
         image1 = Variable(each[0]).cuda()
         image2 = Variable(each[1]).cuda()
-        print '$$$$$', type(each[2])
+        print '$', type(each[0])
+        print '$$', type(each[1])
+        print '$$$', type(each[2])
         label1 = np.array([float(i) for i in each[2]])
         label1 = torch.from_numpy(label1).view(label1.shape[0], -1)
         label1 = label1.type(torch.FloatTensor)
