@@ -49,7 +49,7 @@ class lfwDataset(Dataset):
             image1 = self.transform(image1)
             image2 = self.transform(image2)
 
-        print type(label)
+        # print type(label)
         return image1, image2, label
 
 

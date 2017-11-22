@@ -60,7 +60,8 @@ class FaceDataset(Dataset):
 		# label_tran = label_tranform(label)
 		# label_tran = float(label)
 		# print 'labeltype2 ', type(label_tran)
-		print type(label)
-		row = {'image1': image1_transformed, 'image2': image2_transformed, 'label': label}
+		# print type(label)
+		return image1_transformed, image2_transformed, label
+		# row = {'image1': image1_transformed, 'image2': image2_transformed, 'label': label}
 
-		return row
+		# return row
