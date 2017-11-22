@@ -164,7 +164,7 @@ test_total_num_correctly_matched = 0
 test_total_num_imgs = 0
 file_name = 'fig'
 if ('--augment' in sys.argv):
-    train_face_dataset.transformation = create_transform_list()
+    train_face_dataset.transformation = transforms.Compose(create_transform_list())
 for epoch in range(2):
     print epoch
     num_images = 0
@@ -173,7 +173,7 @@ for epoch in range(2):
         if ('--augment' in sys.argv):
             file_name = 'aug_fig'
             if random.uniform(0.0, 1.0) > 0.3:
-                train_face_dataset.transformation = create_transform_list()
+                train_face_dataset.transformation = transforms.Compose(create_transform_list())
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
 
         # print 'num_correctly_matched = ', num_correctly_matched
