@@ -120,11 +120,21 @@ def read_inputs():
     for sample_batch in dataloader:
         labels = sample_batch['label'].type(torch.DoubleTensor)
         labels = labels.view(-1, 1)
-        print labels.size()[0]
+        # print labels.size()[0]
         out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
+        labels = sample_batch['label'].type(torch.FloatTensor)
+        labels = labels.view(-1, 1)
+        target = Variable(labels, requires_grad=False)
         # print out.size()
-        out = out.view(2, 1)
-        print out[:].size()
+        # out = out.view(2, 1)
+        print out.size()
+        print target.size()
+        print out.data[0]
+        print out.data[0][0]
+        print target[0]
+        print target[0][0]
+        break
+        # print out[:].size()
         # plt.figure()
         # print 'in first'
         # show_batch(sample_batch)
@@ -168,9 +178,9 @@ def create_transform_list():
     return flat
 
 
-# read_inputs()
+read_inputs()
 # create_transform_list()
 # num_correctly_matched = 0
 # num_correctly_matched +=1 if (3 == 1 and 4 >= 0.5) or (3== 0 and 4 < 0.5) else += 0
 # print np.linspace(0, 3, 5)
-print_graphs()
+# print_graphs()
