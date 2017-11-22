@@ -34,11 +34,11 @@ def splitIntoMatrix(file):
 
 
 class FaceDataset(Dataset):
-	def __init__(self, csv_file, root_dir, transformation):
+	def __init__(self, csv_file, root_dir, transform):
 
 		self.faces_with_output = splitIntoMatrix(csv_file)
 		self.root_dir = root_dir
-		self.transformation = transformation
+		self.transform = transformation
 
 	def __len__(self):
 		return len(self.faces_with_output)
@@ -52,8 +52,8 @@ class FaceDataset(Dataset):
 
 		label = self.faces_with_output[idx][2]
 
-		image1_transformed = self.transformation(image1)
-		image2_transformed = self.transformation(image2)
+		image1_transformed = self.transform(image1)
+		image2_transformed = self.transform(image2)
 
 		# label_tranform = transforms.Compose([transforms.ToTensor()])
 		# label_tran = label_tranform(label)
