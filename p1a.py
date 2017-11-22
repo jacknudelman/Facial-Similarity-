@@ -170,7 +170,7 @@ for epoch in range(2):
         labels = labels.view(-1, 1)
         num_images += labels.size()[0]
         target = Variable(labels, requires_grad=False).cuda()
-        print put.data[0]
+        print out.data[0]
         break
 
         # num_images += target.shape[0]
