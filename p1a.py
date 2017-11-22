@@ -113,7 +113,7 @@ def compute_test_loss(net, dataloader):
         target = Variable(labels, requires_grad=False).cuda()
 
         loss = criterion(out, target)
-        for i in range(target.shape[0]):
+        for i in range(target.size()[0]):
             if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
         # print 'loss = ', loss.data[0]
@@ -170,13 +170,13 @@ for epoch in range(2):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda()).cuda()
-        
+
         # print 'num_correctly_matched = ', num_correctly_matched
         labels = sample_batch['label'].type(torch.FloatTensor)
         labels = labels.view(-1, 1)
         num_images += labels.size()[0]
         target = Variable(labels, requires_grad=False).cuda()
-        for i in range(target.shape[0]):
+        for i in range(target.size()[0]):
             if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
         num_images += target.shape[0]
