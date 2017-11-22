@@ -38,7 +38,7 @@ class FaceDataset(Dataset):
 
 		self.faces_with_output = splitIntoMatrix(csv_file)
 		self.root_dir = root_dir
-		self.transform = transformation
+		self.transform = transform
 
 	def __len__(self):
 		return len(self.faces_with_output)
