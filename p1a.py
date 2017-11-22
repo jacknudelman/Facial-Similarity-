@@ -176,7 +176,9 @@ for epoch in range(2):
         # out = net(Variable(sample_batch['image1']).cuda(), Variable(sample_batch['image2']).cuda())
         # print 'got out'
         # print 'num_correctly_matched = ', num_correctly_matched
-        print '$$$$$', type(sample_batch['label'])
+        print '$', type(sample_batch['image1'])
+        print '$$', type(sample_batch['image2'])
+        print '$$$', type(sample_batch['label'])
         break
         labels = labels.view(-1, 1)
         labels = sample_batch['label'].type(torch.FloatTensor)
