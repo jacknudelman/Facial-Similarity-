@@ -161,12 +161,14 @@ total_num_correctly_matched = 0
 total_num_imgs = 0
 test_total_num_correctly_matched = 0
 test_total_num_imgs = 0
+file_name = 'fig'
 for epoch in range(2):
     print epoch
     num_images = 0
 
     for sample_batch in train_dataloader:
         if ('--augment' in sys.argv):
+            file_name = 'aug_fig'
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
@@ -235,7 +237,7 @@ plt.plot(x_raw_testing, testing_loss_list)
 # x_clean_testing = np.linspace(0, iter_num, len(average_testing_loss))
 # plt.plot(x_clean_testing, average_testing_loss)
 
-plt.savefig('fig')
+plt.savefig(file_name)
 plt.title('losses')
 
 

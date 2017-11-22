@@ -178,9 +178,9 @@ def create_transform_list():
     return flat
 
 
-read_inputs()
+# read_inputs()
 # create_transform_list()
 # num_correctly_matched = 0
 # num_correctly_matched +=1 if (3 == 1 and 4 >= 0.5) or (3== 0 and 4 < 0.5) else += 0
 # print np.linspace(0, 3, 5)
-# print_graphs()
+print_graphs()
