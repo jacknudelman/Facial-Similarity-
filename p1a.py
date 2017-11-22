@@ -104,7 +104,7 @@ def compute_test_loss(net, dataloader):
 
     running_loss = 0
     iter_num = 0
-    total_imgs = 0
+    num_images = 0
     num_correctly_matched = 0
     for sample_batch in dataloader:
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda()).cuda()
