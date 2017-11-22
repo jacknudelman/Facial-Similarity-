@@ -173,13 +173,13 @@ for epoch in range(2):
             file_name = 'aug_fig'
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
-        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
+        # out = net(Variable(sample_batch['image1']).cuda(), Variable(sample_batch['image2']).cuda())
         print 'got out'
         # print 'num_correctly_matched = ', num_correctly_matched
-        labels = sample_batch['label'].type(torch.FloatTensor)
+        print type(sample_batch['label'])
         labels = labels.view(-1, 1)
-        num_images += labels.size()[0]
-        target = Variable(labels, requires_grad=False).cuda()
+        labels = sample_batch['label'].type(torch.FloatTensor)
+        target = Variable(labels).cuda()
         for i in range(target.size()[0]):
             if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
