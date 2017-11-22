@@ -126,7 +126,7 @@ def compute_test_loss(net, dataloader):
     return [(running_loss / iter_num), num_correctly_matched, num_images]
 
 def create_transform_list():
-    possible_data_augmenters = [[transforms.RandomHorizontalFlip()], [transforms.RandomVerticalFlip()],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
+    possible_data_augmenters = [[transforms.RandomHorizontalFlip()],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
     trans = list()
     trans.append([transforms.Scale((128, 128))])
     num_additional_transformers = random.randint(1,len(possible_data_augmenters))
