@@ -126,7 +126,7 @@ def compute_test_loss(net, dataloader):
     return [(running_loss / iter_num), num_correctly_matched, num_images]
 
 def create_transform_list():
-    possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
+    possible_data_augmenters = [[transforms.RandomHorizontalFlip()], [transforms.RandomHorizontalFlip()],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
     trans = list()
     trans.append([transforms.Scale((128, 128))])
     num_additional_transformers = random.randint(1,len(possible_data_augmenters))
@@ -134,13 +134,13 @@ def create_transform_list():
     trans.extend([possible_data_augmenters[i] for i in indices])
     trans.append([transforms.ToTensor()])
     flat = [x for sublist in trans for x in sublist]
-    print flat
+    print type(flat)
+    print type(flat[0])
     return flat
 
 net = Net(40).cuda()
 # print 'created net'
 train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
-
 train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
 train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
@@ -165,7 +165,6 @@ test_total_num_imgs = 0
 file_name = 'fig'
 if ('--augment' in sys.argv):
     train_face_dataset.transform = transforms.Compose(create_transform_list())
-train_face_dataset.transform = transforms.Compose([transforms.Scale((128, 128)), transforms.RandomHorizontalFlip, transforms.ToTensor()])
 for epoch in range(2):
     print epoch
     num_images = 0
