@@ -174,9 +174,9 @@ for epoch in range(2):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
         # out = net(Variable(sample_batch['image1']).cuda(), Variable(sample_batch['image2']).cuda())
-        print 'got out'
+        # print 'got out'
         # print 'num_correctly_matched = ', num_correctly_matched
-        print type(sample_batch['label'])
+        print '$$$$$', type(sample_batch['label'])
         labels = labels.view(-1, 1)
         labels = sample_batch['label'].type(torch.FloatTensor)
         target = Variable(labels).cuda()

@@ -51,7 +51,7 @@ class FaceDataset(Dataset):
 		image2 = Image.open(img2_name).convert('RGB')
 
 		label = self.faces_with_output[idx][2]
-
+		print 'labeltype ', type(label)
 		# print 'about to apply transform'
 		image1_transformed = self.transform(image1)
 		image2_transformed = self.transform(image2)
