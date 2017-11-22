@@ -179,7 +179,7 @@ for epoch in range(2):
         for i in range(target.size()[0]):
             if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
-        num_images += target.size()[0]
+        num_images = target.size()[0]
 
         loss = criterion(out, target)
         # print 'train loss = ', loss
@@ -208,10 +208,13 @@ for epoch in range(2):
     total_num_correctly_matched += num_correctly_matched
     total_num_imgs += num_images
     num_correctly_matched = 0
-    num_images = 0
 #
-print 'average train accuracy is ', float(total_num_correctly_matched)/ total_num_correctly_matched
-print 'average test accuracy is ', float(test_total_num_correctly_matched)/ test_total_num_correctly_matched
+print 'total train correct = ', total_num_correctly_matched
+print 'total train  = ', total_num_correctly_matched
+print 'total test correct = ', test_total_num_correctly_matched
+print 'total test  = ', test_total_num_correctly_matched
+print 'average train accuracy is ', float(total_num_correctly_matched)/ float(total_num_imgs)
+print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
 torch.save(net, 'net_state')
 
 print len(training_loss_list)
