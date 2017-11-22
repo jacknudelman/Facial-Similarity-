@@ -165,6 +165,7 @@ test_total_num_imgs = 0
 file_name = 'fig'
 if ('--augment' in sys.argv):
     train_face_dataset.transformation = transforms.Compose(create_transform_list())
+print train_face_dataset.transformation     
 for epoch in range(2):
     print epoch
     num_images = 0
