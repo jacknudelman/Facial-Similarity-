@@ -178,6 +178,7 @@ for epoch in range(2):
         # print 'num_correctly_matched = ', num_correctly_matched
         print '$', type(sample_batch[0])
         print '$$', type(sample_batch[1])
+        print type(sample_batch[2])
         print '$$$', sample_batch[2]
         break
         labels = labels.view(-1, 1)
