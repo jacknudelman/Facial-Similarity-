@@ -105,6 +105,7 @@ def compute_test_loss(net, dataloader):
     running_loss = 0
     iter_num = 0
     total_imgs = 0
+    num_correctly_matched = 0
     for sample_batch in dataloader:
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda()).cuda()
         labels = sample_batch['label'].type(torch.FloatTensor)
@@ -112,12 +113,16 @@ def compute_test_loss(net, dataloader):
         target = Variable(labels, requires_grad=False).cuda()
 
         loss = criterion(out, target)
+        for i in range(target.shape[0]):
+            if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)):
+                num_correctly_matched += 1
         # print 'loss = ', loss.data[0]
         iter_num += 1
+        num_images += target.shape[0]
         running_loss += loss.data[0]
         net.zero_grad()
         # print running_loss / iter_num
-    return running_loss / iter_num
+    return [(running_loss / iter_num), num_correctly_matched, num_images]
 
 def create_transform_list():
     possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
@@ -154,6 +159,8 @@ iter_num = 0
 num_correctly_matched = 0
 total_num_correctly_matched = 0
 total_num_imgs = 0
+test_total_num_correctly_matched = 0
+test_total_num_imgs = 0
 for epoch in range(2):
     print epoch
     num_images = 0
@@ -163,19 +170,16 @@ for epoch in range(2):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
         out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda()).cuda()
-        # for i in range(target.shape[0]):
-            # num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)) else num_correctly_matched
+        for i in range(target.shape[0]):
+            if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)):
+                num_correctly_matched += 1
         # print 'num_correctly_matched = ', num_correctly_matched
         labels = sample_batch['label'].type(torch.FloatTensor)
         labels = labels.view(-1, 1)
         num_images += labels.size()[0]
         target = Variable(labels, requires_grad=False).cuda()
 
-        # num_images += target.shape[0]
-        # target = torch.from_numpy(target).view(target.shape[0], -1)
-        # target = target.type(torch.FloatTensor)
-        # target = Variable(target, requires_grad=False).cuda()
-
+        num_images += target.shape[0]
 
         loss = criterion(out, target)
         # print 'train loss = ', loss
@@ -188,23 +192,26 @@ for epoch in range(2):
         if iter_num % 2 != 0:
             # training_loss_list.append(running_training_loss / 2)
             # running_training_loss = 0
-            t = compute_test_loss(net, test_dataloader)
-            testing_loss_list.append(t)
-            if iter_num % 10 == 0:
-                print 'iter_num = ', iter_num
-                av = np.average(testing_loss_list[-10:])
-                print av
-                average_testing_loss.append(av)
+            [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
+            testing_loss_list.append(testloss)
+            test_total_num_correctly_matched += test_num_correct
+            test_total_num_imgs += test_tested
+
+            # if iter_num % 9 == 0:
+            #     print 'iter_num = ', iter_num
+            #     av = np.average(testing_loss_list[-10:])
+            #     print av
+            #     average_testing_loss.append(av)
 
     print num_images
-    # print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
-#     total_num_correctly_matched += num_correctly_matched
-    # total_num_imgs += num_images
-    # num_correctly_matched = 0
-    # num_images = 0
+    print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
+    total_num_correctly_matched += num_correctly_matched
+    total_num_imgs += num_images
+    num_correctly_matched = 0
+    num_images = 0
 #
-# print 'train accuracy on epoch ', epoch,  ' is ', float(total_num_correctly_matched)/ total_num_correctly_matched
-
+print 'average train accuracy is ', float(total_num_correctly_matched)/ total_num_correctly_matched
+print 'average test accuracy is ', float(test_total_num_correctly_matched)/ test_total_num_correctly_matched
 torch.save(net, 'net_state')
 
 print len(training_loss_list)

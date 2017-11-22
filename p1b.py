@@ -1,19 +1,15 @@
-import torch
+import matplotlib
+matplotlib.use('Agg')
 from data_extraction import *
+import torch
 from torch.autograd import Variable
 import torch.nn as nn
 import torch.nn.functional as F
-import cv2
-import matplotlib.pyplot as plt
 from torchvision import transforms, utils
 from torch.utils.data import Dataset, DataLoader
-import random
-from scipy.ndimage.interpolation import shift
 import sys
-# from p1a import Net
-# import torchsample
 
-import numpy as np
+# TODO when do I have to set to 0 or 1
 
 class Net(nn.Module):
 
@@ -87,73 +83,25 @@ class Net(nn.Module):
         return num_features
 
 
-def show_batch(sample_batch):
-    images_batch1 = sample_batch['image1']
-    images_batch2 = sample_batch['image2']
+def compute_test_loss(net, dataloader):
+    criterion = nn.BCELoss()
 
-    grid1 = utils.make_grid(images_batch1).numpy().transpose((1, 2, 0))
-    print grid1.shape
-    plt.imshow(grid1)
-    plt.axis('off')
-    plt.ioff()
-    plt.show()
-
-    grid2 = utils.make_grid(images_batch2).numpy().transpose((1, 2, 0))
-    plt.imshow(grid2)
-    plt.axis('off')
-    plt.ioff()
-    plt.show()
-
-def read_inputs():
-    #  torchsample.transforms.Rotate(30)
-    # lambda im: im.putdata(shift(np.array(im), (random.randint(-10,10), random.randint(-10,10))))
-    transformation = transforms.Compose([transforms.Scale((128, 128)), lambda im: Image.fromarray(cv2.warpAffine(  np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]]),  (np.array(im).shape[1], np.array(im).shape[0])   )), transforms.Scale((128, 128)), transforms.ToTensor()])
-    transformation1 = transforms.Compose([transforms.Scale((128, 128)), transforms.CenterCrop(128 * 0.7), transforms.Scale((128, 128)), transforms.ToTensor() ])
-
-    face_dataset = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transformation=transformation)
-    face_dataset1 = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transformation=transformation1)
-
-    dataloader = DataLoader(face_dataset, batch_size=2, shuffle=False, num_workers=1)
-    dataloader1 = DataLoader(face_dataset1, batch_size=2, shuffle=False, num_workers=1)
-    net = Net(2)
-
+    running_loss = 0
+    iter_num = 0
+    total_imgs = 0
     for sample_batch in dataloader:
-        labels = sample_batch['label'].type(torch.DoubleTensor)
+        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
+        labels = sample_batch['label'].type(torch.FloatTensor)
         labels = labels.view(-1, 1)
-        print labels.size()[0]
-        out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
-        # print out.size()
-        out = out.view(2, 1)
-        print out[:].size()
-        # plt.figure()
-        # print 'in first'
-        # show_batch(sample_batch)
-        # break
-    # face_dataset.transformation = transformation1
-    # for sample_batch in dataloader:
-    #     print 'in second'
-    #     plt.figure()
-    #     show_batch(sample_batch)
-    #     break
+        target = Variable(labels, requires_grad=False).cuda()
 
-def shift_image(im):
-    x = np.zeros((im.size[1], im.size[0]))
-    # print x.shape
-    print type(shift(np.array(im), (random.randint(-10,10), random.randint(-10,10)), output=x))
-    return x
-
-def print_graphs():
-    img = cv2.imread('fig.png')
-    plt.title('train loss')
-    plt.imshow(img)
-    plt.show()
-    plt.clf()
-#
-    # img = cv2.imread('fig3.png')
-    # plt.title('test loss')
-    # plt.imshow(img)
-    # plt.show()
-    # plt.clf()
+        loss = criterion(out, target)
+        # print 'loss = ', loss.data[0]
+        iter_num += 1
+        running_loss += loss.data[0]
+        net.zero_grad()
+        # print running_loss / iter_num
+    return running_loss / iter_num
 
 def create_transform_list():
     possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
@@ -164,13 +112,5 @@ def create_transform_list():
     trans.extend([possible_data_augmenters[i] for i in indices])
     trans.append([transforms.ToTensor()])
     flat = [x for sublist in trans for x in sublist]
-    print flat
+
     return flat
-
-
-# read_inputs()
-# create_transform_list()
-# num_correctly_matched = 0
-# num_correctly_matched +=1 if (3 == 1 and 4 >= 0.5) or (3== 0 and 4 < 0.5) else += 0
-# print np.linspace(0, 3, 5)
-print_graphs()
