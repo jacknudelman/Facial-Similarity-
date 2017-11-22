@@ -106,7 +106,7 @@ def compute_test_loss(net, dataloader):
     iter_num = 0
     total_imgs = 0
     for sample_batch in dataloader:
-        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
+        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda()).cuda()
         labels = sample_batch['label'].type(torch.FloatTensor)
         labels = labels.view(-1, 1)
         target = Variable(labels, requires_grad=False).cuda()
@@ -162,7 +162,7 @@ for epoch in range(2):
         if ('--augment' in sys.argv):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transformation = create_transform_list()
-        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda())
+        out = net(Variable(sample_batch['image1'], requires_grad=False).cuda(), Variable(sample_batch['image2'], requires_grad=False).cuda()).cuda()
         # for i in range(target.shape[0]):
             # num_correctly_matched = num_correctly_matched + 1 if((target[i] == 1 and out.data[i][0] >= 0.5) or (target[i] == 0 and out.data[i][0] < 0.5)) else num_correctly_matched
         # print 'num_correctly_matched = ', num_correctly_matched
@@ -170,7 +170,9 @@ for epoch in range(2):
         labels = labels.view(-1, 1)
         num_images += labels.size()[0]
         target = Variable(labels, requires_grad=False).cuda()
-        # print target.shape
+        print put.data[0]
+        break
+
         # num_images += target.shape[0]
         # target = torch.from_numpy(target).view(target.shape[0], -1)
         # target = target.type(torch.FloatTensor)
@@ -191,7 +193,7 @@ for epoch in range(2):
             t = compute_test_loss(net, test_dataloader)
             testing_loss_list.append(t)
             if iter_num % 10 == 0:
-                print iter_num
+                print 'iter_num = ', iter_num
                 av = np.average(testing_loss_list[-10:])
                 print av
                 average_testing_loss.append(av)
