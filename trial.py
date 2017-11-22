@@ -48,6 +48,8 @@ class lfwDataset(Dataset):
         if self.transform is not None:
             image1 = self.transform(image1)
             image2 = self.transform(image2)
+
+        print type(label)
         return image1, image2, label
 
 
