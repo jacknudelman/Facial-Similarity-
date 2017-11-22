@@ -210,9 +210,9 @@ for epoch in range(2):
     num_correctly_matched = 0
 #
 print 'total train correct = ', total_num_correctly_matched
-print 'total train  = ', total_num_correctly_matched
+print 'total train  = ', total_num_imgs
 print 'total test correct = ', test_total_num_correctly_matched
-print 'total test  = ', test_total_num_correctly_matched
+print 'total test  = ', test_total_num_imgs
 print 'average train accuracy is ', float(total_num_correctly_matched)/ float(total_num_imgs)
 print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
 torch.save(net, 'net_state')
