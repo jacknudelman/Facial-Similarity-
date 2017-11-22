@@ -8,6 +8,7 @@ import torch.nn.functional as F
 from torchvision import transforms, utils
 from torch.utils.data import Dataset, DataLoader
 import sys
+import random
 
 # TODO when do I have to set to 0 or 1
 
