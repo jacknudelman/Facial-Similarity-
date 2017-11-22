@@ -162,6 +162,8 @@ total_num_imgs = 0
 test_total_num_correctly_matched = 0
 test_total_num_imgs = 0
 file_name = 'fig'
+if ('--augment' in sys.argv):
+    print 'aug'
 for epoch in range(2):
     print epoch
     num_images = 0
