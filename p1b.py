@@ -150,7 +150,7 @@ file_name = 'figb'
 if ('--augment' in sys.argv):
     file_name = 'aug_figb'
     train_face_dataset.transform = transforms.Compose(create_transform_list())
-for epoch in range(10):
+for epoch in range(7):
     print epoch
     num_images = 0
 
@@ -176,13 +176,13 @@ for epoch in range(10):
 
         training_loss_list.append(loss.data[0])
         iter_num += 1
-        if iter_num % 11 == 0:
-            training_loss_list.append(running_training_loss / 11)
-            running_training_loss = 0
-            [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
-            testing_loss_list.append(testloss)
-            test_total_num_correctly_matched += test_num_correct
-            test_total_num_imgs += test_tested
+        # if iter_num % 11 == 0:
+        #     training_loss_list.append(running_training_loss / 11)
+        #     running_training_loss = 0
+        #     [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
+        #     testing_loss_list.append(testloss)
+        #     test_total_num_correctly_matched += test_num_correct
+        #     test_total_num_imgs += test_tested
 
             # if iter_num % 9 == 0:
             #     print 'iter_num = ', iter_num
@@ -191,7 +191,7 @@ for epoch in range(10):
             #     average_testing_loss.append(av)
 
     # print num_images
-#     print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
+    # print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
 #     total_num_correctly_matched += num_correctly_matched
 #     total_num_imgs += num_images
 #     num_correctly_matched = 0
@@ -207,20 +207,12 @@ for epoch in range(10):
 print len(training_loss_list)
 print len(testing_loss_list)
 print len(average_testing_loss)
-# print len(mean_loss)
-# fig1 = plt.plot(mean_loss)
-# plt.savefig('fig1')
-# plt.clf()
+
 x_training = np.linspace(0, iter_num, len(training_loss_list))
 plt.plot(x_training, training_loss_list)
-# plt.savefig('fig2')
-# plt.title('training loss')
-# plt.clf()
-x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
-plt.plot(x_raw_testing, testing_loss_list)
 
-# x_clean_testing = np.linspace(0, iter_num, len(average_testing_loss))
-# plt.plot(x_clean_testing, average_testing_loss)
+# x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
+# plt.plot(x_raw_testing, testing_loss_list)
 
 plt.savefig(file_name)
 plt.title('losses')

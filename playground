@@ -193,7 +193,7 @@ if 1 in a:
 #
 # if ('--augment' in sys.argv):
 #     print 'lksdf'
-# print_graphs()
+print_graphs()
 
 # x = Variable(torch.randn(5, 1))
 # print x
