@@ -89,7 +89,7 @@ class ContrastiveLoss(nn.Module):
         return torch.mean((target) * torch.pow(distance, 2) + (1 - target) * torch.pow(torch.max(0, self.margin - distance), 2))
 
 def compute_test_loss(net, dataloader):
-    criterion = nn.ContrastiveLoss()
+    criterion = ContrastiveLoss()
 
     running_loss = 0
     iter_num = 0
@@ -132,7 +132,7 @@ test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffl
 # print 'got datasets'
 learning_rate = 1e-6
 optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
-criterion = nn.ContrastiveLoss()
+criterion = ContrastiveLoss()
 
 training_loss_list = list()
 testing_loss_list = list()
