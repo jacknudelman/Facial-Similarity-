@@ -109,14 +109,14 @@ def compute_test_loss(net, dataloader):
     num_correctly_matched = 0
     for sample_batch in dataloader:
         out = net(Variable(sample_batch[0], requires_grad=False).cuda(), Variable(sample_batch[1], requires_grad=False).cuda())
-        labels = torch.from_numpy(np.array([float(i) for i in each[2]])).view(-1, 1)
+        labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
 
         loss = criterion(out, target)
-        for i in range(target.size()[0]):
-            if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
-                num_correctly_matched += 1
+        # for i in range(target.size()[0]):
+        #     if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
+        #         num_correctly_matched += 1
         # print 'loss = ', loss.data[0]
         iter_num += 1
         num_images += target.size()[0]
@@ -181,7 +181,7 @@ for epoch in range(2):
         # print type(sample_batch[2])
         # print '$$$', sample_batch[2]
         # break
-        labels = torch.from_numpy(np.array([float(i) for i in each[2]])).view(-1, 1)
+        labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
         # for i in range(target.size()[0]):
