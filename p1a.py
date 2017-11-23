@@ -130,10 +130,7 @@ def create_transform_list():
     trans.append([transforms.Scale((128, 128))])
     num_additional_transformers = random.randint(1,len(possible_data_augmenters))
     indices = np.random.choice(len(possible_data_augmenters), num_additional_transformers, replace=False)
-    if 1 in indices:
-        print 'rotate'
-    if 4 in indices:
-        print 'translate'
+    print indices
     trans.extend([possible_data_augmenters[i] for i in indices])
     trans.append([transforms.ToTensor()])
     # print 'augmented'
@@ -179,7 +176,7 @@ for epoch in range(5):
             if random.uniform(0.0, 1.0) > 0.3:
                 # print 'getting transforms'
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
-        print sample_batch[0].size()
+        # print sample_batch[0].size()
         out = net(Variable(sample_batch[0]).cuda(), Variable(sample_batch[1]).cuda())
         # print 'got out'
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
@@ -199,7 +196,6 @@ for epoch in range(5):
         training_loss_list.append(loss.data[0])
         iter_num += 1
         if iter_num % 11 == 0:
-            print 'testing'
             training_loss_list.append(running_training_loss / 11)
             running_training_loss = 0
             [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
