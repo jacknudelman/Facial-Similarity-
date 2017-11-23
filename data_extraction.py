@@ -39,6 +39,7 @@ class FaceDataset(Dataset):
 		self.faces_with_output = splitIntoMatrix(csv_file)
 		self.root_dir = root_dir
 		self.transform = transform
+		self.possible_trans = list()
 
 	def __len__(self):
 		return len(self.faces_with_output)
@@ -49,7 +50,11 @@ class FaceDataset(Dataset):
 
 		image1 = Image.open(img1_name).convert('RGB')
 		image2 = Image.open(img2_name).convert('RGB')
-		
+
+		# if random.uniform(0.0, 1.0) > 0.3:
+		# 	image1 = image1.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))
+		# 	image2 = image2.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))
+		#
 		image1_transformed = self.transform(image1)
 		image2_transformed = self.transform(image2)
 
