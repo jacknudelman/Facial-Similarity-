@@ -64,6 +64,7 @@ class Net(nn.Module):
 
         x = F.relu(x)
         x = self.batchNorm5(x)
+        print x.size()
         return x
 
     def forward(self, img1, img2):
