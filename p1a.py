@@ -125,11 +125,15 @@ def compute_test_loss(net, dataloader):
 
 def create_transform_list():
     # , [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))]
-    possible_data_augmenters = [[transforms.RandomHorizontalFlip()], [transforms.RandomHorizontalFlip()],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]]), (np.array(im).shape[1], np.array(im).shape[0])))]]
+    possible_data_augmenters = [[transforms.RandomHorizontalFlip()], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [transforms.RandomHorizontalFlip()],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]]), (np.array(im).shape[1], np.array(im).shape[0])))]]
     trans = list()
     trans.append([transforms.Scale((128, 128))])
     num_additional_transformers = random.randint(1,len(possible_data_augmenters))
     indices = np.random.choice(len(possible_data_augmenters), num_additional_transformers, replace=False)
+    if 1 in indices:
+        print 'rotate'
+    if 4 in indices:
+        print 'translate'
     trans.extend([possible_data_augmenters[i] for i in indices])
     trans.append([transforms.ToTensor()])
     # print 'augmented'

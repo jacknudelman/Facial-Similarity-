@@ -181,8 +181,10 @@ def print_graphs():
     # plt.show()
     # plt.clf()
 
-
-read_inputs()
+a = [1, 2, 3]
+if 1 in a:
+    print 'kjdfkd'
+# read_inputs()
 # create_transform_list()
 # num_correctly_matched = 0
 # num_correctly_matched +=1 if (3 == 1 and 4 >= 0.5) or (3== 0 and 4 < 0.5) else += 0
