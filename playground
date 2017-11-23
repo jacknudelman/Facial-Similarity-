@@ -88,11 +88,11 @@ class Net(nn.Module):
 
 
 def show_batch(sample_batch):
-    images_batch1 = sample_batch['image1']
-    images_batch2 = sample_batch['image2']
+    images_batch1 = sample_batch[0]
+    images_batch2 = sample_batch[1]
 
     grid1 = utils.make_grid(images_batch1).numpy().transpose((1, 2, 0))
-    print grid1.shape
+    # print grid1.shape
     plt.imshow(grid1)
     plt.axis('off')
     plt.ioff()
@@ -103,6 +103,17 @@ def show_batch(sample_batch):
     plt.axis('off')
     plt.ioff()
     plt.show()
+
+def create_transform_list():
+    possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: rotate(im,random.randint(-30,30), resize=True )], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
+    trans = list()
+    trans.append([transforms.Scale((128, 128))])
+    num_additional_transformers = random.randint(1,len(possible_data_augmenters))
+    indices = np.random.choice(len(possible_data_augmenters), num_additional_transformers, replace=False)
+    trans.extend([possible_data_augmenters[i] for i in indices])
+    trans.append([transforms.ToTensor()])
+    flat = [x for sublist in trans for x in sublist]
+    return flat
 
 def read_inputs():
     #  torchsample.transforms.Rotate(30)
@@ -117,18 +128,18 @@ def read_inputs():
     dataloader1 = DataLoader(face_dataset1, batch_size=2, shuffle=False, num_workers=1)
     net = Net(2)
 
-    x =[transforms.Scale((128, 128)), transforms.RandomHorizontalFlip, transforms.ToTensor()]
-    print type(x)
-    print type(x[0])
-    face_dataset.transform = transforms.Compose(x)
+    trans =[transforms.Scale((128, 128)), transforms.RandomHorizontalFlip(), transforms.RandomHorizontalFlip(),transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128)), lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128)), lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]]), (np.array(im).shape[1], np.array(im).shape[0]))), transforms.ToTensor()]
+    # flat = [x for sublist in trans for x in sublist]
+    # print flat
+    face_dataset.transform = transforms.Compose(trans)
     for sample_batch in dataloader:
-        labels = sample_batch['label'].type(torch.DoubleTensor)
-        labels = labels.view(-1, 1)
-        # print labels.size()[0]
-        out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
-        labels = sample_batch['label'].type(torch.FloatTensor)
-        labels = labels.view(-1, 1)
-        target = Variable(labels, requires_grad=False)
+        # labels = sample_batch['label'].type(torch.DoubleTensor)
+        # labels = labels.view(-1, 1)
+        print sample_batch[0].size()
+        # out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
+        # labels = sample_batch['label'].type(torch.FloatTensor)
+        # labels = labels.view(-1, 1)
+        # target = Variable(labels, requires_grad=False)
         # print out.size()
         # out = out.view(2, 1)
         # print out.size()
@@ -170,19 +181,8 @@ def print_graphs():
     # plt.show()
     # plt.clf()
 
-def create_transform_list():
-    possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
-    trans = list()
-    trans.append([transforms.Scale((128, 128))])
-    num_additional_transformers = random.randint(1,len(possible_data_augmenters))
-    indices = np.random.choice(len(possible_data_augmenters), num_additional_transformers, replace=False)
-    trans.extend([possible_data_augmenters[i] for i in indices])
-    trans.append([transforms.ToTensor()])
-    flat = [x for sublist in trans for x in sublist]
-    return flat
 
-
-# read_inputs()
+read_inputs()
 # create_transform_list()
 # num_correctly_matched = 0
 # num_correctly_matched +=1 if (3 == 1 and 4 >= 0.5) or (3== 0 and 4 < 0.5) else += 0
@@ -193,6 +193,6 @@ def create_transform_list():
 #     print 'lksdf'
 # print_graphs()
 
-x = Variable(torch.randn(5, 1))
-print x
-print x**2
+# x = Variable(torch.randn(5, 1))
+# print x
+# print x**2

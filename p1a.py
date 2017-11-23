@@ -174,6 +174,7 @@ for epoch in range(5):
             if random.uniform(0.0, 1.0) > 0.3:
                 # print 'getting transforms'
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
+        print sample_batch[0].size()
         out = net(Variable(sample_batch[0]).cuda(), Variable(sample_batch[1]).cuda())
         # print 'got out'
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
@@ -226,20 +227,12 @@ torch.save(net, 'net_state')
 print len(training_loss_list)
 print len(testing_loss_list)
 print len(average_testing_loss)
-# print len(mean_loss)
-# fig1 = plt.plot(mean_loss)
-# plt.savefig('fig1')
-# plt.clf()
+
 x_training = np.linspace(0, iter_num, len(training_loss_list))
 plt.plot(x_training, training_loss_list)
-# plt.savefig('fig2')
-# plt.title('training loss')
-# plt.clf()
+
 x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
 plt.plot(x_raw_testing, testing_loss_list)
-
-# x_clean_testing = np.linspace(0, iter_num, len(average_testing_loss))
-# plt.plot(x_clean_testing, average_testing_loss)
 
 plt.savefig(file_name)
 plt.title('losses')

@@ -49,19 +49,10 @@ class FaceDataset(Dataset):
 
 		image1 = Image.open(img1_name).convert('RGB')
 		image2 = Image.open(img2_name).convert('RGB')
-
-		label = self.faces_with_output[idx][2]
-		# print 'labeltype ', type(label)
-		# print 'about to apply transform'
+		
 		image1_transformed = self.transform(image1)
 		image2_transformed = self.transform(image2)
-		# print 'tranform applied'
-		# label_tranform = transforms.Compose([transforms.ToTensor()])
-		# label_tran = label_tranform(label)
-		# label_tran = float(label)
-		# print 'labeltype2 ', type(label_tran)
-		# print type(label)
-		return image1_transformed, image2_transformed, label
-		# row = {'image1': image1_transformed, 'image2': image2_transformed, 'label': label}
 
-		# return row
+		label = self.faces_with_output[idx][2]
+
+		return image1_transformed, image2_transformed, label
