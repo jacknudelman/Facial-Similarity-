@@ -78,7 +78,7 @@ class Net(nn.Module):
             num_features *= s
         return num_features
 
-class ContrastiveLoss(torch.nn.module):
+class ContrastiveLoss(nn.Module):
 
     def __init__(self, margin=1.0):
         super(ContrastiveLoss, self).__init()
