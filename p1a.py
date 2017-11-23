@@ -114,15 +114,13 @@ def compute_test_loss(net, dataloader):
         target = Variable(labels).cuda()
 
         loss = criterion(out, target)
-        # for i in range(target.size()[0]):
-        #     if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
-        #         num_correctly_matched += 1
-        # print 'loss = ', loss.data[0]
+        for i in range(target.size()[0]):
+            if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
+                num_correctly_matched += 1
         iter_num += 1
         num_images += target.size()[0]
         running_loss += loss.data[0]
         net.zero_grad()
-        # print running_loss / iter_num
     return [(running_loss / iter_num), num_correctly_matched, num_images]
 
 def create_transform_list():
@@ -175,19 +173,13 @@ for epoch in range(10):
             if random.uniform(0.0, 1.0) > 0.3:
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
         out = net(Variable(sample_batch[0]).cuda(), Variable(sample_batch[1]).cuda())
-        # print 'got out'
-        # print 'num_correctly_matched = ', num_correctly_matched
-        # print '$', type(sample_batch[0])
-        # print '$$', type(sample_batch[1])
-        # print type(sample_batch[2])
-        # print '$$$', sample_batch[2]
-        # break
+
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
-        # for i in range(target.size()[0]):
-        #     if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
-        #         num_correctly_matched += 1
+        for i in range(target.size()[0]):
+            if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
+                num_correctly_matched += 1
         num_images += target.size()[0]
 
         loss = criterion(out, target)
