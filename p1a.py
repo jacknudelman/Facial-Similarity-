@@ -188,7 +188,6 @@ for epoch in range(5):
 
         loss = criterion(out, target)
         running_training_loss += loss.data[0]
-        # print 'train loss = ', loss
         net.zero_grad()
         loss.backward()
         optimizer.step()
