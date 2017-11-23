@@ -156,6 +156,7 @@ testing_loss_list = list()
 average_testing_loss = list()
 
 iter_num = 0
+running_training_loss = 0
 num_correctly_matched = 0
 total_num_correctly_matched = 0
 total_num_imgs = 0
@@ -190,6 +191,7 @@ for epoch in range(2):
         num_images += target.size()[0]
 
         loss = criterion(out, target)
+        running_training_loss += loss.data[0]
         # print 'train loss = ', loss
         net.zero_grad()
         loss.backward()
@@ -198,7 +200,7 @@ for epoch in range(2):
         training_loss_list.append(loss.data[0])
         iter_num += 1
         if iter_num % 11 == 0:
-            training_loss_list.append(running_training_loss / 2)
+            training_loss_list.append(running_training_loss / 11)
             running_training_loss = 0
             [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
             testing_loss_list.append(testloss)
