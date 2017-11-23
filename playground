@@ -191,4 +191,8 @@ def create_transform_list():
 #
 # if ('--augment' in sys.argv):
 #     print 'lksdf'
-print_graphs()
+# print_graphs()
+
+x = Variable(torch.randn(5, 1))
+print x
+print x**2

@@ -131,7 +131,7 @@ def create_transform_list():
     indices = np.random.choice(len(possible_data_augmenters), num_additional_transformers, replace=False)
     trans.extend([possible_data_augmenters[i] for i in indices])
     trans.append([transforms.ToTensor()])
-    print 'augmented'
+    # print 'augmented'
     flat = [x for sublist in trans for x in sublist]
 
     return flat
@@ -172,10 +172,10 @@ for epoch in range(10):
     for sample_batch in train_dataloader:
         if '--augment' in sys.argv:
             if random.uniform(0.0, 1.0) > 0.3:
-                print 'getting transforms'
+                # print 'getting transforms'
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
         out = net(Variable(sample_batch[0]).cuda(), Variable(sample_batch[1]).cuda())
-        print 'got out'
+        # print 'got out'
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
@@ -194,6 +194,7 @@ for epoch in range(10):
         training_loss_list.append(loss.data[0])
         iter_num += 1
         if iter_num % 11 == 0:
+            print 'testing'
             training_loss_list.append(running_training_loss / 11)
             running_training_loss = 0
             [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
@@ -209,6 +210,7 @@ for epoch in range(10):
 
     # print num_images
     print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
+    print 'current average testing accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
     total_num_correctly_matched += num_correctly_matched
     total_num_imgs += num_images
     num_correctly_matched = 0
