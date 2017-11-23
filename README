@@ -1,0 +1,31 @@
+README
+
+0
+train accuracy on epoch  0  is  0.526818181818
+1
+train accuracy on epoch  1  is  0.790909090909
+2
+train accuracy on epoch  2  is  0.891363636364
+3
+train accuracy on epoch  3  is  0.940909090909
+4
+train accuracy on epoch  4  is  0.963636363636
+5
+train accuracy on epoch  5  is  0.981818181818
+6
+train accuracy on epoch  6  is  0.987727272727
+7
+train accuracy on epoch  7  is  0.991363636364
+8
+train accuracy on epoch  8  is  0.995
+9
+train accuracy on epoch  9  is  0.996363636364
+total train correct =  19945
+total train  =  22000
+total test correct =  26482
+total test  =  50000
+average train accuracy is  0.906590909091
+average test accuracy is  0.52964
+600
+50
+0
