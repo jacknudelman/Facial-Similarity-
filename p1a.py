@@ -163,18 +163,19 @@ test_total_num_correctly_matched = 0
 test_total_num_imgs = 0
 file_name = 'fig'
 if ('--augment' in sys.argv):
+    file_name = 'aug_fig'
     train_face_dataset.transform = transforms.Compose(create_transform_list())
 for epoch in range(10):
     print epoch
     num_images = 0
 
     for sample_batch in train_dataloader:
-        if ('--augment' in sys.argv):
-            file_name = 'aug_fig'
+        if '--augment' in sys.argv:
             if random.uniform(0.0, 1.0) > 0.3:
+                print 'getting transforms'
                 train_face_dataset.transform = transforms.Compose(create_transform_list())
         out = net(Variable(sample_batch[0]).cuda(), Variable(sample_batch[1]).cuda())
-
+        print 'got out'
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
