@@ -168,6 +168,7 @@ for epoch in range(7):
         # num_images += target.size()[0]
 
         loss = criterion(out[0], out[1], target)
+        print loss.data[0]
         running_training_loss += loss.data[0]
         # print 'train loss = ', loss
         net.zero_grad()

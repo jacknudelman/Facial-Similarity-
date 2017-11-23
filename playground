@@ -174,12 +174,12 @@ def print_graphs():
     plt.imshow(img)
     plt.show()
     plt.clf()
-#
-    # img = cv2.imread('fig3.png')
-    # plt.title('test loss')
-    # plt.imshow(img)
-    # plt.show()
-    # plt.clf()
+
+    img = cv2.imread('figb.png')
+    plt.title('test loss')
+    plt.imshow(img)
+    plt.show()
+    plt.clf()
 
 a = [1, 2, 3]
 if 1 in a:
