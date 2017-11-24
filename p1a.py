@@ -181,7 +181,7 @@ for epoch in range(10):
         #         train_face_dataset.transform = transforms.Compose(create_transform_list())
         # print sample_batch[0].size()
         out = net(Variable(sample_batch[0]).cuda(), Variable(sample_batch[1]).cuda())
-        # print 'got out'
+        print 'got out'
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
