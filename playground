@@ -135,7 +135,8 @@ def read_inputs():
     for sample_batch in rand_dataloader:
         # labels = sample_batch['label'].type(torch.DoubleTensor)
         # labels = labels.view(-1, 1)
-        print sample_batch[0].size()
+        # print sample_batch[0].size()
+        print type(sample_batch[0])
         # out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
         # labels = sample_batch['label'].type(torch.FloatTensor)
         # labels = labels.view(-1, 1)
