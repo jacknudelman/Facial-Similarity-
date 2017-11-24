@@ -111,7 +111,7 @@ def compute_test_loss(net, dataloader):
     for sample_batch in dataloader:
         img1 = Variable(sample_batch[0], requires_grad=False).type(torch.FloatTensor)
         img2 = Variable(sample_batch[1], requires_grad=False).type(torch.FloatTensor)
-        
+
         out = net(img1.cuda(), img2.cuda())
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
@@ -183,8 +183,10 @@ for epoch in range(2):
         #         # print 'getting transforms'
         #         train_face_dataset.transform = transforms.Compose(create_transform_list())
         # print sample_batch[0].size()
-        out = net(Variable(sample_batch[0]).cuda(), Variable(sample_batch[1]).cuda())
-        print 'got out'
+        img1 = Variable(sample_batch[0], requires_grad=False).type(torch.FloatTensor)
+        img2 = Variable(sample_batch[1], requires_grad=False).type(torch.FloatTensor)
+
+        out = net(img1.cuda(), img2.cuda())
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
