@@ -121,18 +121,18 @@ def read_inputs():
     transformation = transforms.Compose([transforms.Scale((128, 128)), lambda im: Image.fromarray(cv2.warpAffine(  np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]]),  (np.array(im).shape[1], np.array(im).shape[0])   )), transforms.Scale((128, 128)), transforms.ToTensor()])
     transformation1 = transforms.Compose([transforms.Scale((128, 128)), transforms.CenterCrop(128 * 0.7), transforms.Scale((128, 128)), transforms.ToTensor() ])
 
-    face_dataset = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation)
-    face_dataset1 = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation1)
+    rand_face_dataset = RandFaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation)
+    # face_dataset = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation)
+    # face_dataset1 = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation1)
 
-    dataloader = DataLoader(face_dataset, batch_size=2, shuffle=False, num_workers=1)
-    dataloader1 = DataLoader(face_dataset1, batch_size=2, shuffle=False, num_workers=1)
+    rand_dataloader = DataLoader(rand_face_dataset, batch_size=2, shuffle=False, num_workers=1)
+    # dataloader = DataLoader(face_dataset, batch_size=2, shuffle=False, num_workers=1)
+    # dataloader1 = DataLoader(face_dataset1, batch_size=2, shuffle=False, num_workers=1)
     net = Net(2)
 
-    trans =[transforms.Scale((128, 128)), transforms.RandomHorizontalFlip(), transforms.RandomHorizontalFlip(),transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128)), lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128)), lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]]), (np.array(im).shape[1], np.array(im).shape[0]))), transforms.ToTensor()]
-    # flat = [x for sublist in trans for x in sublist]
-    # print flat
-    face_dataset.transform = transforms.Compose(trans)
-    for sample_batch in dataloader:
+    # trans =[transforms.Scale((128, 128)), transforms.RandomHorizontalFlip(), transforms.RandomHorizontalFlip(),transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128)), lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128)), lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]]), (np.array(im).shape[1], np.array(im).shape[0]))), transforms.ToTensor()]
+    # face_dataset.transform = transforms.Compose(trans)
+    for sample_batch in rand_dataloader:
         # labels = sample_batch['label'].type(torch.DoubleTensor)
         # labels = labels.view(-1, 1)
         print sample_batch[0].size()
@@ -153,7 +153,8 @@ def read_inputs():
         plt.figure()
         # print 'in first'
         show_batch(sample_batch)
-        break
+        print
+
         # break
     # face_dataset.transformation = transformation1
     # for sample_batch in dataloader:
@@ -184,7 +185,7 @@ def print_graphs():
 a = [1, 2, 3]
 if 1 in a:
     print 'kjdfkd'
-# read_inputs()
+read_inputs()
 # create_transform_list()
 # num_correctly_matched = 0
 # num_correctly_matched +=1 if (3 == 1 and 4 >= 0.5) or (3== 0 and 4 < 0.5) else += 0
@@ -193,7 +194,7 @@ if 1 in a:
 #
 # if ('--augment' in sys.argv):
 #     print 'lksdf'
-print_graphs()
+# print_graphs()
 
 # x = Variable(torch.randn(5, 1))
 # print x

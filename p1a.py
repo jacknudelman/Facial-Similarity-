@@ -167,16 +167,16 @@ test_total_num_imgs = 0
 file_name = 'fig'
 if ('--augment' in sys.argv):
     file_name = 'aug_fig'
-    train_face_dataset.transform = transforms.Compose(create_transform_list())
+    train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
 for epoch in range(5):
     print epoch
     num_images = 0
 
     for sample_batch in train_dataloader:
-        if '--augment' in sys.argv:
-            if random.uniform(0.0, 1.0) > 0.3:
-                # print 'getting transforms'
-                train_face_dataset.transform = transforms.Compose(create_transform_list())
+        # if '--augment' in sys.argv:
+        #     if random.uniform(0.0, 1.0) > 0.3:
+        #         # print 'getting transforms'
+        #         train_face_dataset.transform = transforms.Compose(create_transform_list())
         # print sample_batch[0].size()
         out = net(Variable(sample_batch[0]).cuda(), Variable(sample_batch[1]).cuda())
         # print 'got out'
