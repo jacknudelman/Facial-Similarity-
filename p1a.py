@@ -166,6 +166,7 @@ test_total_num_correctly_matched = 0
 test_total_num_imgs = 0
 file_name = 'fig'
 if ('--augment' in sys.argv):
+    print 'augmenting'
     file_name = 'aug_fig'
     train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
 for epoch in range(10):
