@@ -237,10 +237,10 @@ print len(testing_loss_list)
 print len(average_testing_loss)
 
 x_training = np.linspace(0, iter_num, len(training_loss_list))
-plt.plot(x_training, training_loss_list)
+plt.plot(x_training, training_loss_list, label='training loss')
 
 x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
-plt.plot(x_raw_testing, testing_loss_list)
+plt.plot(x_raw_testing, testing_loss_list, label='testing loss')
 
 plt.savefig(file_name)
 plt.title('losses')
