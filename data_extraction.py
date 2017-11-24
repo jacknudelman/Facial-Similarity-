@@ -37,6 +37,7 @@ def apply_transformations(img):
 	# print 'begin ', img.shape
 	if random.uniform(0.0, 1.0) > 0.5:
 		img = np.flip(img, axis=0)
+		img = np.ascontiguousarray(img)
 		# print '0', img.shape
 	if random.uniform(0.0, 1.0) > 0.5:
 		rot = random.randint(-30, 30)
