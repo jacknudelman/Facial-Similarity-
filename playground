@@ -176,7 +176,7 @@ def print_graphs():
     plt.show()
     plt.clf()
 
-    img = cv2.imread('figb.png')
+    img = cv2.imread('aug_fig.png')
     plt.title('test loss')
     plt.imshow(img)
     plt.show()
@@ -185,7 +185,7 @@ def print_graphs():
 a = [1, 2, 3]
 if 1 in a:
     print 'kjdfkd'
-read_inputs()
+# read_inputs()
 # create_transform_list()
 # num_correctly_matched = 0
 # num_correctly_matched +=1 if (3 == 1 and 4 >= 0.5) or (3== 0 and 4 < 0.5) else += 0
@@ -194,7 +194,7 @@ read_inputs()
 #
 # if ('--augment' in sys.argv):
 #     print 'lksdf'
-# print_graphs()
+print_graphs()
 
 # x = Variable(torch.randn(5, 1))
 # print x

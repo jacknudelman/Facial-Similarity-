@@ -64,7 +64,7 @@ class Net(nn.Module):
 
         x = F.relu(x)
         x = self.batchNorm5(x)
-        print x.size()
+        # print x.size()
         return x
 
     def forward(self, img1, img2):
@@ -168,7 +168,7 @@ file_name = 'fig'
 if ('--augment' in sys.argv):
     file_name = 'aug_fig'
     train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
-for epoch in range(5):
+for epoch in range(10):
     print epoch
     num_images = 0
 
