@@ -137,7 +137,7 @@ class RandFaceDataset(Dataset):
 			# image1 = torch.from_numpy(image1)
 			# image2 = torch.from_numpy(image2)
 			# print image1.size()
-			print 'got augmented'
+			# print 'got augmented'
 			# print 'got transformed', image1.size()
  		# 	image1 = image1.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))
 		# 	image2 = image2.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))
