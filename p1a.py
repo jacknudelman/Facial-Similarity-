@@ -248,10 +248,12 @@ def train(weight_path):
 
 
 if '--save' in sys.argv:
-    weight_path = sys.argv.index('--load') + 1
+    weight_path_index = sys.argv.index('--load') + 1
+    weight_path = sys.argv[weight_path_index]
     train(weight_path)
 if '--load' in sys.argv:
     weight_path = sys.argv.index('--load') + 1
+    weight_path = sys.argv[weight_path_index]
     net = Net(20).cuda()
     net.load_state_dict(torch.load(weight_path))
     # print 'created net'
