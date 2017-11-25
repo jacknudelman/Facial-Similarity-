@@ -142,7 +142,7 @@ def create_transform_list():
 
     return flat
 
-def train():
+def train(weight_path):
     net = Net(20).cuda()
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
@@ -169,7 +169,7 @@ def train():
     test_total_num_correctly_matched = 0
     test_total_num_imgs = 0
     file_name = 'fig'
-    if ('--augment' in sys.argv):
+    if ('--save' in sys.argv):
         print 'augmenting'
         file_name = 'aug_fig'
         train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
@@ -231,7 +231,7 @@ def train():
     print 'total test  = ', test_total_num_imgs
     print 'average train accuracy is ', float(total_num_correctly_matched)/ float(total_num_imgs)
     print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
-    # torch.save(net.state_dict(), 'weights_file')
+    torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
     print len(testing_loss_list)
@@ -247,10 +247,13 @@ def train():
     plt.title('losses')
 
 
-
+if '--save' in sys.argv:
+    weight_path = sys.argv.index('--load') + 1
+    train(weight_path)
 if '--load' in sys.argv:
+    weight_path = sys.argv.index('--load') + 1
     net = Net(20).cuda()
-    net.load_state_dict(torch.load('weights_file'))
+    net.load_state_dict(torch.load(weight_path))
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
