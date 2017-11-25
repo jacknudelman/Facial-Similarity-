@@ -142,7 +142,7 @@ def create_transform_list():
 
     return flat
 
-def train()
+def train():
     net = Net(20).cuda()
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
