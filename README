@@ -28,15 +28,10 @@ current average testing accuracy is  0.544066666667
 9
 train accuracy on epoch  9  is  0.995909090909
 current average testing accuracy is  0.54322
-total train correct =  20013
-total train  =  22000
-total test correct =  27161
-total test  =  50000
+
 average train accuracy is  0.909681818182
 average test accuracy is  0.54322
-600
-50
-0
+
 
 
 
@@ -45,56 +40,95 @@ average test accuracy is  0.54322
 
 augmenting
 0
-train accuracy on epoch  0  is  0.516
-current average testing accuracy is  0.5605
+train accuracy on epoch  0  is  0.528
+current average testing accuracy is  0.581
 1
-train accuracy on epoch  1  is  0.598
-current average testing accuracy is  0.589
+train accuracy on epoch  1  is  0.617
+current average testing accuracy is  0.593
 2
-train accuracy on epoch  2  is  0.644
-current average testing accuracy is  0.612857142857
+train accuracy on epoch  2  is  0.635
+current average testing accuracy is  0.600666666667
 3
-train accuracy on epoch  3  is  0.665
-current average testing accuracy is  0.621777777778
+train accuracy on epoch  3  is  0.67
+current average testing accuracy is  0.6115
 4
-train accuracy on epoch  4  is  0.699
-current average testing accuracy is  0.633636363636
+train accuracy on epoch  4  is  0.688
+current average testing accuracy is  0.625
 5
-train accuracy on epoch  5  is  0.725
-current average testing accuracy is  0.648285714286
+train accuracy on epoch  5  is  0.708
+current average testing accuracy is  0.629285714286
 6
-train accuracy on epoch  6  is  0.73
-current average testing accuracy is  0.6554375
+train accuracy on epoch  6  is  0.721
+current average testing accuracy is  0.632875
 7
-train accuracy on epoch  7  is  0.761
-current average testing accuracy is  0.665368421053
+train accuracy on epoch  7  is  0.729
+current average testing accuracy is  0.635666666667
 8
-train accuracy on epoch  8  is  0.748
-current average testing accuracy is  0.671142857143
+train accuracy on epoch  8  is  0.763
+current average testing accuracy is  0.6403
 9
-train accuracy on epoch  9  is  0.77
-current average testing accuracy is  0.676
+train accuracy on epoch  9  is  0.776
+current average testing accuracy is  0.649083333333
 10
-train accuracy on epoch  10  is  0.781
-current average testing accuracy is  0.684076923077
+train accuracy on epoch  10  is  0.774
+current average testing accuracy is  0.651307692308
 11
-train accuracy on epoch  11  is  0.807
-current average testing accuracy is  0.689178571429
+train accuracy on epoch  11  is  0.789
+current average testing accuracy is  0.654071428571
 12
-train accuracy on epoch  12  is  0.77
-current average testing accuracy is  0.694566666667
+train accuracy on epoch  12  is  0.796
+current average testing accuracy is  0.657466666667
 13
-train accuracy on epoch  13  is  0.791
-current average testing accuracy is  0.701787878788
+train accuracy on epoch  13  is  0.801
+current average testing accuracy is  0.663882352941
 14
-train accuracy on epoch  14  is  0.802
-current average testing accuracy is  0.706542857143
-total train correct =  10807
-total train  =  15000
-total test correct =  24729
-total test  =  35000
-average train accuracy is  0.720466666667
-average test accuracy is  0.706542857143
-785
-35
-0
+train accuracy on epoch  14  is  0.814
+current average testing accuracy is  0.666833333333
+15
+train accuracy on epoch  15  is  0.811
+current average testing accuracy is  0.669578947368
+16
+train accuracy on epoch  16  is  0.815
+current average testing accuracy is  0.6718
+17
+train accuracy on epoch  17  is  0.834
+current average testing accuracy is  0.673666666667
+18
+train accuracy on epoch  18  is  0.809
+current average testing accuracy is  0.678130434783
+19
+train accuracy on epoch  19  is  0.82
+current average testing accuracy is  0.679541666667
+20
+train accuracy on epoch  20  is  0.83
+current average testing accuracy is  0.6814
+21
+train accuracy on epoch  21  is  0.827
+current average testing accuracy is  0.682769230769
+22
+train accuracy on epoch  22  is  0.843
+current average testing accuracy is  0.68525
+23
+train accuracy on epoch  23  is  0.84
+current average testing accuracy is  0.686137931034
+24
+train accuracy on epoch  24  is  0.831
+current average testing accuracy is  0.6877
+25
+train accuracy on epoch  25  is  0.849
+current average testing accuracy is  0.689419354839
+26
+train accuracy on epoch  26  is  0.858
+current average testing accuracy is  0.69090625
+27
+train accuracy on epoch  27  is  0.868
+current average testing accuracy is  0.693029411765
+28
+train accuracy on epoch  28  is  0.852
+current average testing accuracy is  0.694285714286
+29
+train accuracy on epoch  29  is  0.847
+current average testing accuracy is  0.695444444444
+
+final average train accuracy is  0.7781
+average test accuracy is  0.695444444444
