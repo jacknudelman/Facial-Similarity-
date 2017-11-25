@@ -260,6 +260,10 @@ if '--load' in sys.argv:
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=False, num_workers=net.batchSize)
 
+    # learning_rate = 1e-6
+    # optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
+    criterion = nn.BCELoss()
+
     num_correctly_matched = 0
     num_images = 0
     for sample_batch in train_dataloader:
