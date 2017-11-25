@@ -142,7 +142,7 @@ def create_transform_list():
 
     return flat
 
-net = Net(40).cuda()
+net = Net(20).cuda()
 # print 'created net'
 train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
 train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
@@ -203,8 +203,8 @@ for epoch in range(15):
 
         training_loss_list.append(loss.data[0])
         iter_num += 1
-        if iter_num % 11 == 0:
-            training_loss_list.append(running_training_loss / 11)
+        if iter_num % 21 == 0:
+            training_loss_list.append(running_training_loss / 20)
             running_training_loss = 0
             [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
             testing_loss_list.append(testloss)
