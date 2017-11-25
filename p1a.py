@@ -173,7 +173,7 @@ if ('--augment' in sys.argv):
     file_name = 'aug_fig'
     train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-for epoch in range(15):
+for epoch in range(30):
     print epoch
     num_images = 0
 
@@ -203,8 +203,8 @@ for epoch in range(15):
 
         training_loss_list.append(loss.data[0])
         iter_num += 1
-        if iter_num % 21 == 0:
-            training_loss_list.append(running_training_loss / 20)
+        if iter_num % 41 == 0:
+            training_loss_list.append(running_training_loss / 40)
             running_training_loss = 0
             [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
             testing_loss_list.append(testloss)
