@@ -1,3 +1,40 @@
+1a)
+  Without Augmentation:
+    - I chose to have 30 epochs. I realized that no matter how much the train
+    loss decreased, the test loss maintained a steady .5 accuracy so it didn't
+    matter how many epochs I did. However, I do 30 epochs for the augmentation
+    part so I did 30 here just to be consistent.
+
+    final average train accuracy is  0.909681818182
+    final average test accuracy is  0.54322
+
+  with augmentation:
+    - I chose to have 30 epochs here because each epoch consistently gave
+    better results for the testing  dataset but plateaued at a steady .7 after
+    about 27 epochs. My machine also often gave me memory issues when running
+    more than about 35 epochs so I wanted to be safe while also having a
+    relatively good accuracy
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 0
 train accuracy on epoch  0  is  0.551818181818
 current average testing accuracy is  0.5352
@@ -28,9 +65,6 @@ current average testing accuracy is  0.544066666667
 9
 train accuracy on epoch  9  is  0.995909090909
 current average testing accuracy is  0.54322
-
-average train accuracy is  0.909681818182
-average test accuracy is  0.54322
 
 
 
