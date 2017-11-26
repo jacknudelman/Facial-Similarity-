@@ -157,7 +157,7 @@ def train(weight_path):
     file_name = 'figb'
     if ('--save' in sys.argv):
         print 'augmenting'
-        file_name = 'aug_fig'
+        file_name = 'aug_figb'
         train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
         train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     for epoch in range(30):
