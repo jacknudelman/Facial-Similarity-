@@ -156,7 +156,7 @@ def train(weight_path):
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     # print 'got datasets'
-    learning_rate = 1e-5
+    learning_rate = 1e-4
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     criterion = nn.BCELoss()
 
