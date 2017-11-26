@@ -95,7 +95,8 @@ def compute_test_loss(net, dataloader):
 
     running_loss = 0
     iter_num = 0
-    total_imgs = 0
+    num_images = 0
+    num_correctly_matched = 0
     for sample_batch in dataloader:
         # out = net(Variable(sample_batch[0], requires_grad=False).cuda(), Variable(sample_batch[1], requires_grad=False).cuda())
         img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
@@ -108,10 +109,10 @@ def compute_test_loss(net, dataloader):
         loss = criterion(out[0], out[1], target)
         # print 'loss = ', loss.data[0]
         iter_num += 1
+        num_images += target.size()[0]
         running_loss += loss.data[0]
         net.zero_grad()
-        # print running_loss / iter_num
-    return running_loss / iter_num
+    return [(running_loss / iter_num), num_correctly_matched, num_images]
 
 def create_transform_list():
     possible_data_augmenters = [[transforms.RandomHorizontalFlip], [transforms.RandomHorizontalFlip],[transforms.CenterCrop(np.floor(128 * random.uniform(0.7, 1.3))), transforms.Scale((128, 128))], [lambda im: im.rotate(random.randint(-30,30), expand=1 ), transforms.Scale((128, 128))], [lambda im: Image.fromarray(cv2.warpAffine(np.array(im), np.float32([[1, 0, random.randint(-10,10)], [0, 1, random.randint(-10,10)]])))]]
