@@ -1,7 +1,6 @@
 *.tgz
 .DS_Store
 *.pyc
-small_sample.txt
 Applications/
 lfw/
 *.ipynb
