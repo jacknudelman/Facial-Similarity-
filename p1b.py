@@ -97,10 +97,13 @@ def compute_test_loss(net, dataloader):
     iter_num = 0
     total_imgs = 0
     for sample_batch in dataloader:
-        out = net(Variable(sample_batch[0], requires_grad=False).cuda(), Variable(sample_batch[1], requires_grad=False).cuda())
-        labels = sample_batch[2].type(torch.FloatTensor)
-        labels = labels.view(-1, 1)
-        target = Variable(labels, requires_grad=False).cuda()
+        # out = net(Variable(sample_batch[0], requires_grad=False).cuda(), Variable(sample_batch[1], requires_grad=False).cuda())
+        img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
+        img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
+        out = net(img1.cuda(), img2.cuda())
+        labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
+        labels = labels.type(torch.FloatTensor)
+        target = Variable(labels).cuda()
 
         loss = criterion(out[0], out[1], target)
         # print 'loss = ', loss.data[0]
