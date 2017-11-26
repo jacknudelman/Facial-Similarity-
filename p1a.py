@@ -156,7 +156,7 @@ def train(weight_path):
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     # print 'got datasets'
-    learning_rate = 1e-6
+    learning_rate = 1e-5
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     criterion = nn.BCELoss()
 
@@ -323,7 +323,7 @@ if '--load' in sys.argv:
     net = Net(20).cuda()
     # net.eval()
     net.load_state_dict(torch.load(weight_path))
-    net.eval()
+    # net.eval()
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
