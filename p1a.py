@@ -294,7 +294,10 @@ if '--load' in sys.argv:
 
     num_correctly_matched = 0
     num_images = 0
+    bathnum = 0
     for sample_batch in test_dataloader:
+        print bathnum
+        bathnum += 1
         img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
         img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
 
@@ -308,7 +311,8 @@ if '--load' in sys.argv:
         for i in range(target.size()[0]):
             if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
-
+    print num_images
+    print num_correctly_matched
     print 'final average testing accuracy = ', float(num_correctly_matched) / num_images
 # for i_batch, sample_batch in enumerate(dataloader):
 #     print i_batch
