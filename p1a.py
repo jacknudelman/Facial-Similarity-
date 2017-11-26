@@ -208,13 +208,13 @@ def train(weight_path):
             training_loss_list.append(loss.data[0])
             iter_num += 1
             # I only used this next part to plot my graphs
-            # if iter_num % 39 == 0:
-            #     # training_loss_list.append(running_training_loss / 40)
-            #     # running_training_loss = 0
-            #     [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
-            #     testing_loss_list.append(testloss)
-            #     test_total_num_correctly_matched += test_num_correct
-            #     test_total_num_imgs += test_tested
+            if iter_num % 39 == 0:
+                training_loss_list.append(running_training_loss / 40)
+                running_training_loss = 0
+                [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
+                testing_loss_list.append(testloss)
+                test_total_num_correctly_matched += test_num_correct
+                test_total_num_imgs += test_tested
 
                 # if iter_num % 9 == 0:
                 #     print 'iter_num = ', iter_num
@@ -224,7 +224,7 @@ def train(weight_path):
 
         # print num_images
         print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
-        # print 'current average testing accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
+        print 'current average testing accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
         total_num_correctly_matched += num_correctly_matched
         total_num_imgs += num_images
         num_correctly_matched = 0
@@ -235,7 +235,7 @@ def train(weight_path):
     print 'total test correct = ', test_total_num_correctly_matched
     print 'total test  = ', test_total_num_imgs
     print 'average train accuracy is ', float(total_num_correctly_matched)/ float(total_num_imgs)
-    # print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
+    print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
     # torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
