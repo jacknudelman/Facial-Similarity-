@@ -80,13 +80,13 @@ class Net(nn.Module):
 
 class ContrastiveLoss(nn.Module):
 
-    def __init__(self, margin=15.0):
+    def __init__(self, margin=18.0):
         super(ContrastiveLoss, self).__init__()
         self.margin = margin
 
-    def forward(self, input1, input2, target):
+    def forward(self, distance, target):
         # distance = torch.sqrt(torch.pow(input1, 2) - torch.pow(input2, 2))
-        distance = F.pairwise_distance(input1, input2)
+
         print 'distance ',distance
         return torch.mean((target) * torch.pow(distance, 2) + (1 - target) * torch.pow(torch.clamp(self.margin - distance, min=0.0), 2))
 
@@ -105,8 +105,11 @@ def compute_test_loss(net, dataloader):
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
-
-        loss = criterion(out[0], out[1], target)
+        distance = F.pairwise_distance(input1, input2)
+        for i in range(distance.size()[0]):
+            if((target.data[i][0] == 1 and distance.data[i][0] <= 18) or (target.data[i][0] == 0 and distance.data[i][0] > 18)):
+                num_correctly_matched += 1
+        loss = criterion(distance, target)
         # print 'loss = ', loss.data[0]
         iter_num += 1
         num_images += target.size()[0]
@@ -174,12 +177,13 @@ def train(weight_path):
             labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
             labels = labels.type(torch.FloatTensor)
             target = Variable(labels).cuda()
-            # for i in range(target.size()[0]):
-            #     if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
-            #         num_correctly_matched += 1
+            distance = F.pairwise_distance(input1, input2)
+            for i in range(distance.size()[0]):
+                if((target.data[i][0] == 1 and distance.data[i][0] <= 18) or (target.data[i][0] == 0 and distance.data[i][0] > 18)):
+                    num_correctly_matched += 1
             num_images += target.size()[0]
 
-            loss = criterion(out[0], out[1], target)
+            loss = criterion(distance, target)
             running_training_loss += loss.data[0]
             net.zero_grad()
             loss.backward()
