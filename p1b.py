@@ -105,7 +105,7 @@ def compute_test_loss(net, dataloader):
         labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
-        distance = F.pairwise_distance(input1, input2)
+        distance = F.pairwise_distance(img1, img2)
         for i in range(distance.size()[0]):
             if((target.data[i][0] == 1 and distance.data[i][0] <= 18) or (target.data[i][0] == 0 and distance.data[i][0] > 18)):
                 num_correctly_matched += 1
@@ -177,7 +177,7 @@ def train(weight_path):
             labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
             labels = labels.type(torch.FloatTensor)
             target = Variable(labels).cuda()
-            distance = F.pairwise_distance(input1, input2)
+            distance = F.pairwise_distance(img1, img2)
             for i in range(distance.size()[0]):
                 if((target.data[i][0] == 1 and distance.data[i][0] <= 18) or (target.data[i][0] == 0 and distance.data[i][0] > 18)):
                     num_correctly_matched += 1
