@@ -125,7 +125,7 @@ def compute_test_loss(net, dataloader):
         iter_num += 1
         num_images += target.size()[0]
         running_loss += loss.data[0]
-        net.zero_grad()
+        # net.zero_grad()
     # print '$$$', float(num_correctly_matched) / num_images
     return [(running_loss / iter_num), num_correctly_matched, num_images]
 
@@ -190,6 +190,7 @@ def train(weight_path):
             img1 = Variable(sample_batch[0], requires_grad=True).type(torch.FloatTensor)
             img2 = Variable(sample_batch[1], requires_grad=True).type(torch.FloatTensor)
 
+            optimizer.zero_grad()
             out = net(img1.cuda(), img2.cuda())
             labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
             labels = labels.type(torch.FloatTensor)
@@ -201,7 +202,7 @@ def train(weight_path):
 
             loss = criterion(out, target)
             running_training_loss += loss.data[0]
-            net.zero_grad()
+            # net.zero_grad()
             loss.backward()
             optimizer.step()
 
