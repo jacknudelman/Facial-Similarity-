@@ -10,13 +10,13 @@
 
   with augmentation:
     - I chose to have 30 epochs here because each epoch consistently gave
-    better results for the testing  dataset but plateaued at a steady .7 after
+    better results for the testing  dataset but plateaued at a steady .7 ish after
     about 27 epochs. My machine also often gave me memory issues when running
     more than about 35 epochs so I wanted to be safe while also having a
     relatively good accuracy
 
-    
-
+    final average training accuracy =  0.510454545455
+    final average testing accuracy =  0.751
 
 
 

@@ -258,7 +258,7 @@ if '--load' in sys.argv:
     net.load_state_dict(torch.load(weight_path))
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
-    train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
+    train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=False, num_workers=net.batchSize)
 
     test_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
