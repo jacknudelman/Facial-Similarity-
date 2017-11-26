@@ -175,7 +175,7 @@ def train(weight_path):
         file_name = 'aug_fig'
         train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
         train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-    for epoch in range(10):
+    for epoch in range(5):
         print epoch
         num_images = 0
         for sample_batch in train_dataloader:
