@@ -80,7 +80,7 @@ class Net(nn.Module):
 
 class ContrastiveLoss(nn.Module):
 
-    def __init__(self, margin=18.0):
+    def __init__(self, margin=15.0):
         super(ContrastiveLoss, self).__init__()
         self.margin = margin
 
@@ -107,7 +107,7 @@ def compute_test_loss(net, dataloader):
         target = Variable(labels).cuda()
         distance = F.pairwise_distance(out[0], out[1])
         for i in range(distance.size()[0]):
-            if((target.data[i][0] == 1 and distance.data[i][0] <= 18) or (target.data[i][0] == 0 and distance.data[i][0] > 18)):
+            if((target.data[i][0] == 1 and distance.data[i][0] <= 15) or (target.data[i][0] == 0 and distance.data[i][0] > 15)):
                 num_correctly_matched += 1
         loss = criterion(distance, target)
         # print 'loss = ', loss.data[0]
