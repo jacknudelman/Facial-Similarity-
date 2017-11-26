@@ -231,7 +231,7 @@ def train(weight_path):
     print 'total test  = ', test_total_num_imgs
     print 'average train accuracy is ', float(total_num_correctly_matched)/ float(total_num_imgs)
     print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
-    torch.save(net.state_dict(), weight_path)
+    # torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
     print len(testing_loss_list)
