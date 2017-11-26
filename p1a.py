@@ -207,6 +207,7 @@ def train(weight_path):
 
             training_loss_list.append(loss.data[0])
             iter_num += 1
+            # I only used this next part to plot my graphs
             # if iter_num % 39 == 0:
             #     # training_loss_list.append(running_training_loss / 40)
             #     # running_training_loss = 0
@@ -251,7 +252,7 @@ def train(weight_path):
     plt.title('losses')
 
 
-    net.eval()
+    # net.eval()
     # train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     # train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
     # train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
