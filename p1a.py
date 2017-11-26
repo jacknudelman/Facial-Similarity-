@@ -320,7 +320,7 @@ if '--load' in sys.argv:
     weight_path_index = sys.argv.index('--load') + 1
     weight_path = sys.argv[weight_path_index]
     net = Net(20).cuda()
-    net.eval()
+    # net.eval()
     net.load_state_dict(torch.load(weight_path))
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
