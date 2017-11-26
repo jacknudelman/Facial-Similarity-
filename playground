@@ -226,7 +226,7 @@ def run_test():
         target = Variable(labels).cuda()
 
         # loss = criterion(out, target)
-        print torch.stack([out, target])
+        print torch.stack([out, target], dim=1)
         num_images += target.size()[0]
         for i in range(target.size()[0]):
             if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
