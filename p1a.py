@@ -204,8 +204,8 @@ def train(weight_path):
             training_loss_list.append(loss.data[0])
             iter_num += 1
             if iter_num % 39 == 0:
-                training_loss_list.append(running_training_loss / 40)
-                running_training_loss = 0
+                # training_loss_list.append(running_training_loss / 40)
+                # running_training_loss = 0
                 [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
                 testing_loss_list.append(testloss)
                 test_total_num_correctly_matched += test_num_correct
@@ -235,7 +235,7 @@ def train(weight_path):
 
     print len(training_loss_list)
     print len(testing_loss_list)
-    print len(average_testing_loss)
+
 
     x_training = np.linspace(0, iter_num, len(training_loss_list))
     plt.plot(x_training, training_loss_list)
