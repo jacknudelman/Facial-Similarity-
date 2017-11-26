@@ -102,7 +102,7 @@ def show_batch(sample_batch):
 
 
 def compute_test_loss(net, dataloader):
-    net.eval()
+    net.train(mode=False)
     criterion = nn.BCELoss()
 
     running_loss = 0
@@ -215,7 +215,7 @@ def train(weight_path):
                 testing_loss_list.append(testloss)
                 test_total_num_correctly_matched += test_num_correct
                 test_total_num_imgs += test_tested
-                net.train()
+                net.train(mode=True)
 
                 # if iter_num % 9 == 0:
                 #     print 'iter_num = ', iter_num
