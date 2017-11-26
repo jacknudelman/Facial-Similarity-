@@ -197,7 +197,7 @@ def print_graphs():
 
 def run_test():
     net = Net(20).cuda()
-    net.load_state_dict(torch.load(weight_path))
+    net.load_state_dict(torch.load('weights_file'))
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=train_transformation)
@@ -267,7 +267,8 @@ def run_test():
 #
 # if ('--augment' in sys.argv):
 #     print 'lksdf'
-print_graphs()
+run_test()
+# print_graphs()
 
 # x = Variable(torch.randn(5, 1))
 # print x
