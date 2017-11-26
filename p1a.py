@@ -102,7 +102,7 @@ def show_batch(sample_batch):
 
 
 def compute_test_loss(net, dataloader):
-    # net.eval()
+    net.eval()
     criterion = nn.BCELoss()
 
     running_loss = 0
@@ -146,7 +146,7 @@ def create_transform_list():
 
 def train(weight_path):
     net = Net(20).cuda()
-
+    net.train()
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
@@ -181,7 +181,7 @@ def train(weight_path):
         print epoch
         num_images = 0
         for sample_batch in train_dataloader:
-            net.train()
+
             # if '--augment' in sys.argv:
             #     if random.uniform(0.0, 1.0) > 0.3:
             #         # print 'getting transforms'
@@ -215,6 +215,7 @@ def train(weight_path):
                 testing_loss_list.append(testloss)
                 test_total_num_correctly_matched += test_num_correct
                 test_total_num_imgs += test_tested
+                net.train()
 
                 # if iter_num % 9 == 0:
                 #     print 'iter_num = ', iter_num
