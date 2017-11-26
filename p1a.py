@@ -223,7 +223,7 @@ def train(weight_path):
 
         # print num_images
         print 'train accuracy on epoch ', epoch,  ' is ', float(num_correctly_matched)/ num_images
-        print 'current average testing accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
+        # print 'current average testing accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
         total_num_correctly_matched += num_correctly_matched
         total_num_imgs += num_images
         num_correctly_matched = 0
