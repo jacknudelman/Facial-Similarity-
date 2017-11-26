@@ -102,6 +102,7 @@ def show_batch(sample_batch):
 
 
 def compute_test_loss(net, dataloader):
+    net.eval()
     criterion = nn.BCELoss()
 
     running_loss = 0
