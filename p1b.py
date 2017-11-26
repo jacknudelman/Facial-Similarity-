@@ -322,3 +322,4 @@ def train(weight_path):
 #
 # plt.savefig(file_name)
 # plt.title('losses')
+train('weights_file_b')
