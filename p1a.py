@@ -176,7 +176,6 @@ def train(weight_path):
     #     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     for epoch in range(30):
         print epoch
-        num_images = 0
 
         for sample_batch in train_dataloader:
             # if '--augment' in sys.argv:
@@ -204,7 +203,7 @@ def train(weight_path):
 
             training_loss_list.append(loss.data[0])
             iter_num += 1
-            if iter_num % 41 == 0:
+            if iter_num % 39 == 0:
                 training_loss_list.append(running_training_loss / 40)
                 running_training_loss = 0
                 [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
@@ -224,6 +223,7 @@ def train(weight_path):
         total_num_correctly_matched += num_correctly_matched
         total_num_imgs += num_images
         num_correctly_matched = 0
+        num_images = 0
     #
     print 'total train correct = ', total_num_correctly_matched
     print 'total train  = ', total_num_imgs
