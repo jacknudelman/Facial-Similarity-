@@ -145,6 +145,7 @@ def create_transform_list():
 
 def train(weight_path):
     net = Net(20).cuda()
+    net.train()
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
