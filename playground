@@ -291,8 +291,8 @@ def run_test():
 #
 # if ('--augment' in sys.argv):
 #     print 'lksdf'
-run_test()
-# print_graphs()
+# run_test()
+print_graphs()
 
 # x = Variable(torch.randn(5, 1))
 # print x

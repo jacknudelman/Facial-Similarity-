@@ -126,7 +126,7 @@ def compute_test_loss(net, dataloader):
         num_images += target.size()[0]
         running_loss += loss.data[0]
         net.zero_grad()
-    print '$$$', float(num_correctly_matched) / num_images
+    # print '$$$', float(num_correctly_matched) / num_images
     return [(running_loss / iter_num), num_correctly_matched, num_images]
 
 def create_transform_list():
@@ -331,55 +331,59 @@ if '--load' in sys.argv:
     test_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
-    learning_rate = 1e-6
-    optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
-    criterion = nn.BCELoss()
-
-    num_correctly_matched = 0
-    num_images = 0
-    bathnum = 0
-    for sample_batch in train_dataloader:
-        # print bathnum
-        bathnum += 1
-        img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
-        img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
-
-        out = net(img1.cuda(), img2.cuda())
-        labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
-        labels = labels.type(torch.FloatTensor)
-        target = Variable(labels).cuda()
-
-        # loss = criterion(out, target)
-        num_images += target.size()[0]
-        for i in range(target.size()[0]):
-            if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
-                num_correctly_matched += 1
-    print num_images
-    print num_correctly_matched
-    print 'final average training accuracy = ', float(num_correctly_matched) / num_images
-
-    num_correctly_matched = 0
-    num_images = 0
-    bathnum = 0
-    for sample_batch in test_dataloader:
-        # print bathnum
-        bathnum += 1
-        img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
-        img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
-
-        out = net(img1.cuda(), img2.cuda())
-        labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
-        labels = labels.type(torch.FloatTensor)
-        target = Variable(labels).cuda()
-
-        loss = criterion(out, target)
-        num_images += target.size()[0]
-        for i in range(target.size()[0]):
-            if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
-                num_correctly_matched += 1
-    print num_images
-    print num_correctly_matched
-    print 'final average testing accuracy = ', float(num_correctly_matched) / num_images
+    train_out = compute_test_loss(net, train_dataloader)
+    print 'final average training accuracy is ', float(train_out[1])/train_out[2]
+    test_out = compute_test_loss(net, test_dataloader)
+    print 'final average testing accuracy is ', float(test_out[1])/test_out[2]
+    # learning_rate = 1e-6
+    # optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
+    # criterion = nn.BCELoss()
+    #
+    # num_correctly_matched = 0
+    # num_images = 0
+    # bathnum = 0
+    # for sample_batch in train_dataloader:
+    #     # print bathnum
+    #     bathnum += 1
+    #     img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
+    #     img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
+    #
+    #     out = net(img1.cuda(), img2.cuda())
+    #     labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
+    #     labels = labels.type(torch.FloatTensor)
+    #     target = Variable(labels).cuda()
+    #
+    #     # loss = criterion(out, target)
+    #     num_images += target.size()[0]
+    #     for i in range(target.size()[0]):
+    #         if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
+    #             num_correctly_matched += 1
+    # print num_images
+    # print num_correctly_matched
+    # print 'final average training accuracy = ', float(num_correctly_matched) / num_images
+    #
+    # num_correctly_matched = 0
+    # num_images = 0
+    # bathnum = 0
+    # for sample_batch in test_dataloader:
+    #     # print bathnum
+    #     bathnum += 1
+    #     img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
+    #     img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
+    #
+    #     out = net(img1.cuda(), img2.cuda())
+    #     labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
+    #     labels = labels.type(torch.FloatTensor)
+    #     target = Variable(labels).cuda()
+    #
+    #     loss = criterion(out, target)
+    #     num_images += target.size()[0]
+    #     for i in range(target.size()[0]):
+    #         if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
+    #             num_correctly_matched += 1
+    # print num_images
+    # print num_correctly_matched
+    # print 'final average testing accuracy = ', float(num_correctly_matched) / num_images
 # for i_batch, sample_batch in enumerate(dataloader):
 #     print i_batch
 #     plt.figure()
