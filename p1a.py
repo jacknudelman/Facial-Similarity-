@@ -176,7 +176,7 @@ def train(weight_path):
     #     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     for epoch in range(30):
         print epoch
-
+        num_images = 0
         for sample_batch in train_dataloader:
             # if '--augment' in sys.argv:
             #     if random.uniform(0.0, 1.0) > 0.3:
@@ -223,7 +223,7 @@ def train(weight_path):
         total_num_correctly_matched += num_correctly_matched
         total_num_imgs += num_images
         num_correctly_matched = 0
-        num_images = 0
+
     #
     print 'total train correct = ', total_num_correctly_matched
     print 'total train  = ', total_num_imgs
