@@ -322,6 +322,7 @@ if '--load' in sys.argv:
     net = Net(20).cuda()
     # net.eval()
     net.load_state_dict(torch.load(weight_path))
+    net.eval()
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
