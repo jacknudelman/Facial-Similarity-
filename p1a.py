@@ -262,7 +262,7 @@ if '--load' in sys.argv:
     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=False, num_workers=net.batchSize)
 
     test_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
-    test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
+    test_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=False, num_workers=net.batchSize)
 
     learning_rate = 1e-6
