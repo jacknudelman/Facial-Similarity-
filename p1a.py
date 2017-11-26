@@ -169,11 +169,11 @@ def train(weight_path):
     test_total_num_correctly_matched = 0
     test_total_num_imgs = 0
     file_name = 'fig'
-    # if ('--save' in sys.argv):
-    #     print 'augmenting'
-    #     file_name = 'aug_fig'
-    #     train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
-    #     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
+    if ('--save' in sys.argv):
+        print 'augmenting'
+        file_name = 'aug_fig'
+        train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
+        train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     for epoch in range(30):
         print epoch
         num_images = 0
@@ -231,7 +231,7 @@ def train(weight_path):
     print 'total test  = ', test_total_num_imgs
     print 'average train accuracy is ', float(total_num_correctly_matched)/ float(total_num_imgs)
     print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
-    # torch.save(net.state_dict(), weight_path)
+    torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
     print len(testing_loss_list)
@@ -265,13 +265,16 @@ if '--load' in sys.argv:
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=False, num_workers=net.batchSize)
 
-    # learning_rate = 1e-6
-    # optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
+    learning_rate = 1e-6
+    optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     criterion = nn.BCELoss()
 
     num_correctly_matched = 0
     num_images = 0
+    bathnum = 0
     for sample_batch in train_dataloader:
+        print bathnum
+        bathnum += 1
         img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
         img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
 
@@ -280,12 +283,13 @@ if '--load' in sys.argv:
         labels = labels.type(torch.FloatTensor)
         target = Variable(labels).cuda()
 
-        loss = criterion(out, target)
+        # loss = criterion(out, target)
         num_images += target.size()[0]
         for i in range(target.size()[0]):
             if((target.data[i][0] == 1 and out.data[i][0] >= 0.5) or (target.data[i][0] == 0 and out.data[i][0] < 0.5)):
                 num_correctly_matched += 1
-
+    print num_images
+    print num_correctly_matched
     print 'final average training accuracy = ', float(num_correctly_matched) / num_images
 
     num_correctly_matched = 0

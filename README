@@ -5,8 +5,8 @@
     matter how many epochs I did. However, I do 30 epochs for the augmentation
     part so I did 30 here just to be consistent.
 
-    final average train accuracy is  0.909681818182
-    final average test accuracy is  0.54322
+    final average train accuracy is  0.968
+    final average test accuracy is  0.534857142857
 
   with augmentation:
     - I chose to have 30 epochs here because each epoch consistently gave
