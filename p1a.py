@@ -177,7 +177,7 @@ def train(weight_path):
         file_name = 'aug_fig'
         train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
         train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-    for epoch in range(5):
+    for epoch in range(3):
         print epoch
         num_images = 0
         for sample_batch in train_dataloader:
@@ -234,7 +234,7 @@ def train(weight_path):
     print 'total test correct = ', test_total_num_correctly_matched
     print 'total test  = ', test_total_num_imgs
     print 'average train accuracy is ', float(total_num_correctly_matched)/ float(total_num_imgs)
-    print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
+    # print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
     # torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
