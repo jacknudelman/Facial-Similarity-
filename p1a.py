@@ -125,6 +125,7 @@ def compute_test_loss(net, dataloader):
         num_images += target.size()[0]
         running_loss += loss.data[0]
         net.zero_grad()
+    print '$$$', float(num_correctly_matched) / num_images
     return [(running_loss / iter_num), num_correctly_matched, num_images]
 
 def create_transform_list():
