@@ -207,13 +207,13 @@ def train(weight_path):
 
             training_loss_list.append(loss.data[0])
             iter_num += 1
-            if iter_num % 39 == 0:
-                # training_loss_list.append(running_training_loss / 40)
-                # running_training_loss = 0
-                [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
-                testing_loss_list.append(testloss)
-                test_total_num_correctly_matched += test_num_correct
-                test_total_num_imgs += test_tested
+            # if iter_num % 39 == 0:
+            #     # training_loss_list.append(running_training_loss / 40)
+            #     # running_training_loss = 0
+            #     [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
+            #     testing_loss_list.append(testloss)
+            #     test_total_num_correctly_matched += test_num_correct
+            #     test_total_num_imgs += test_tested
 
                 # if iter_num % 9 == 0:
                 #     print 'iter_num = ', iter_num
