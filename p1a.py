@@ -320,6 +320,7 @@ if '--load' in sys.argv:
     weight_path_index = sys.argv.index('--load') + 1
     weight_path = sys.argv[weight_path_index]
     net = Net(20).cuda()
+    net.eval()
     net.load_state_dict(torch.load(weight_path))
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
@@ -338,7 +339,7 @@ if '--load' in sys.argv:
     num_images = 0
     bathnum = 0
     for sample_batch in train_dataloader:
-        print bathnum
+        # print bathnum
         bathnum += 1
         img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
         img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
@@ -361,7 +362,7 @@ if '--load' in sys.argv:
     num_images = 0
     bathnum = 0
     for sample_batch in test_dataloader:
-        print bathnum
+        # print bathnum
         bathnum += 1
         img1 = Variable(sample_batch[0], requires_grad=False, volatile=True).type(torch.FloatTensor)
         img2 = Variable(sample_batch[1], requires_grad=False, volatile=True).type(torch.FloatTensor)
