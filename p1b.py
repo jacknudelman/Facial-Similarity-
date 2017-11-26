@@ -175,7 +175,7 @@ def train(weight_path):
             #         num_correctly_matched += 1
             num_images += target.size()[0]
 
-            loss = criterion(out, target)
+            loss = criterion(out[0], out[1], target)
             running_training_loss += loss.data[0]
             net.zero_grad()
             loss.backward()
