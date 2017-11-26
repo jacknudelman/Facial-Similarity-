@@ -134,7 +134,7 @@ def train(weight_path):
     # print 'got datasets'
     learning_rate = 1e-6
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
-    criterion = nn.ContrastiveLoss()
+    criterion = ContrastiveLoss()
 
     training_loss_list = list()
     testing_loss_list = list()
