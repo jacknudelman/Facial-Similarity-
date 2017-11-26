@@ -177,7 +177,7 @@ def train(weight_path):
         file_name = 'aug_fig'
         train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
         train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-    for epoch in range(10):
+    for epoch in range(3):
         print epoch
         num_images = 0
         for sample_batch in train_dataloader:
@@ -187,8 +187,8 @@ def train(weight_path):
             #         # print 'getting transforms'
             #         train_face_dataset.transform = transforms.Compose(create_transform_list())
             # print sample_batch[0].size()
-            img1 = Variable(sample_batch[0], requires_grad=False).type(torch.FloatTensor)
-            img2 = Variable(sample_batch[1], requires_grad=False).type(torch.FloatTensor)
+            img1 = Variable(sample_batch[0], requires_grad=True).type(torch.FloatTensor)
+            img2 = Variable(sample_batch[1], requires_grad=True).type(torch.FloatTensor)
 
             out = net(img1.cuda(), img2.cuda())
             labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
@@ -209,8 +209,8 @@ def train(weight_path):
             iter_num += 1
             # I only used this next part to plot my graphs
             if iter_num % 39 == 0:
-                training_loss_list.append(running_training_loss / 40)
-                running_training_loss = 0
+                # training_loss_list.append(running_training_loss / 40)
+                # running_training_loss = 0
                 [testloss, test_num_correct, test_tested] = compute_test_loss(net, test_dataloader)
                 testing_loss_list.append(testloss)
                 test_total_num_correctly_matched += test_num_correct
