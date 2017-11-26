@@ -87,7 +87,7 @@ class ContrastiveLoss(nn.Module):
     def forward(self, distance, target):
         # distance = torch.sqrt(torch.pow(input1, 2) - torch.pow(input2, 2))
 
-        print 'distance ',distance
+        # print 'distance ',distance
         return torch.mean((target) * torch.pow(distance, 2) + (1 - target) * torch.pow(torch.clamp(self.margin - distance, min=0.0), 2))
 
 def compute_test_loss(net, dataloader):
