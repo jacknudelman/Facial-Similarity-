@@ -179,7 +179,7 @@ def play(weight_path):
         file_name = 'aug_fig'
         train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
         train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-    for epoch in range(15):
+    for epoch in range(30):
         print epoch
         for sample_batch in train_dataloader:
             img1 = Variable(sample_batch[0], requires_grad=True).type(torch.FloatTensor).cuda()
@@ -192,9 +192,16 @@ def play(weight_path):
 
             training_loss_list.append(loss)
 
-        test_loss = test_bce(test_dataloader, net)
-        print 'training_loss_list', test_loss
-        testing_loss_list.append(test_loss)
+
+        out_acc = test_bce(test_dataloader, net)
+        print 'testing accuracy', out_acc[0]
+        testing_loss_list.append(out_acc[0])
+
+        if epoch % 5 == 0:
+            out_acc = test_bce(train_dataloader, net)
+            print 'train accuracy', out_acc[0]
+            testing_loss_list.append(out_acc[0])
+
 
     torch.save(net.state_dict(), weight_path)
 
@@ -241,7 +248,7 @@ def test_bce(loader, net):
             if (temp.data[i][0] == target.data[i][0]):
                 num_correct += 1
         num_images += temp.size()[0]
-        return float(num_correct)/num_images
+        return [float(num_correct)/float(num_images), num_correct, num_images]
 
 def train(weight_path):
     # print 'created net'
