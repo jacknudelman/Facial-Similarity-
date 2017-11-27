@@ -144,10 +144,10 @@ def create_transform_list():
     flat = [x for sublist in trans for x in sublist]
 
     return flat
-def play():
+def play(weight_path):
     net = Net(20).cuda()
     net.train()
-    
+
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
@@ -195,6 +195,20 @@ def play():
         test_loss = test_bce(test_dataloader, net)
         print 'training_loss_list', test_loss
         testing_loss_list.append(test_loss)
+torch.save(net.state_dict(), weight_path)
+
+print len(training_loss_list)
+print len(testing_loss_list)
+
+x_training = np.linspace(0, iter_num, len(training_loss_list))
+plt.plot(x_training, training_loss_list)
+
+x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
+plt.plot(x_raw_testing, testing_loss_list)
+
+plt.title('losses')
+plt.savefig(file_name)
+
 
 def train_bce(net, optimizer, img1, img2, target, criterion):
     net.train()
