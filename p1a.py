@@ -160,7 +160,7 @@ def play(weight_path):
 
     criterion = nn.BCELoss()
 
-    learning_rate = 1e-4
+    learning_rate = 1e-6
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 
     training_loss_list = list()
