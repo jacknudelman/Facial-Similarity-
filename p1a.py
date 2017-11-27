@@ -144,10 +144,89 @@ def create_transform_list():
     flat = [x for sublist in trans for x in sublist]
 
     return flat
+def play():
+    train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
+    train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
+    train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
-def train(weight_path):
+    test_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
+    test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
+    test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
+    # print 'got datasets'
     net = Net(20).cuda()
     net.train()
+    criterion = nn.BCELoss()
+
+    learning_rate = 1e-4
+    optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
+
+    training_loss_list = list()
+    testing_loss_list = list()
+    average_testing_loss = list()
+
+    iter_num = 0
+    running_training_loss = 0
+    num_correctly_matched = 0
+    total_num_correctly_matched = 0
+    total_num_imgs = 0
+    test_total_num_correctly_matched = 0
+    test_total_num_imgs = 0
+    file_name = 'fig'
+    if ('--save' in sys.argv):
+        print 'augmenting'
+        file_name = 'aug_fig'
+        train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
+        train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
+    for epoch in range(5):
+        print epoch
+        for sample_batch in train_dataloader:
+            img1 = Variable(sample_batch[0], requires_grad=True).type(torch.FloatTensor).cuda()
+            img2 = Variable(sample_batch[1], requires_grad=True).type(torch.FloatTensor).cuda()
+            labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
+            labels = labels.type(torch.FloatTensor)
+            target = Variable(labels).cuda()
+
+            loss = train_bce(net, optimizer, img1, img2, target, criterion)
+
+            training_loss_list.append(loss)
+
+        test_loss = test_bce(test_dataloader, net)
+        print 'training_loss_list', test_loss
+        testing_loss_list.append(test_loss)
+
+def train_bce(net, optimizer, img1, img2, target, criterion):
+    net.train()
+
+    optimizer.zero_grad()
+    out = net(img1, img2)
+    loss = criterion(out, target)
+    loss.backward()
+    optimizer.step()
+    return loss.data[0]
+
+def test_bce(loader, net):
+    net.eval()
+
+    num_correct = 0
+    num_images = 0
+
+    for sample_batch in loader:
+        img1 = Variable(sample_batch[0], requires_grad=True).type(torch.FloatTensor).cuda()
+        img2 = Variable(sample_batch[1], requires_grad=True).type(torch.FloatTensor).cuda()
+        labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
+        labels = labels.type(torch.FloatTensor)
+        target = Variable(labels).cuda()
+
+        out = net(img1, img2)
+        temp = torch.round(out)
+
+        for i in range(temp.size()[0]):
+            if (temp.data[i][0] == target.data[i][0]):
+                num_correct += 1
+        num_images += temp.size()[0]
+        return float(num_correct)/num_images
+
+def train(weight_path):
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
@@ -157,9 +236,12 @@ def train(weight_path):
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     # print 'got datasets'
+    net = Net(20).cuda()
+    net.train()
+    criterion = nn.BCELoss()
+
     learning_rate = 1e-4
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
-    criterion = nn.BCELoss()
 
     training_loss_list = list()
     testing_loss_list = list()
@@ -318,7 +400,8 @@ def train(weight_path):
 if '--save' in sys.argv:
     weight_path_index = sys.argv.index('--save') + 1
     weight_path = sys.argv[weight_path_index]
-    train(weight_path)
+    play()
+    # train(weight_path)
 if '--load' in sys.argv:
     weight_path_index = sys.argv.index('--load') + 1
     weight_path = sys.argv[weight_path_index]
