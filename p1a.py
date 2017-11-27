@@ -197,7 +197,7 @@ def play(weight_path):
         print 'testing accuracy', out_acc[0]
         testing_loss_list.append(out_acc[0])
 
-        if epoch % 5 == 0:
+        if (epoch + 1) % 5 == 0:
             out_acc = test_bce(train_dataloader, net)
             print 'train accuracy', out_acc[0]
             testing_loss_list.append(out_acc[0])
