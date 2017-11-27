@@ -343,11 +343,6 @@ def test_contrastive(loader, net):
         dist = distance_func(out[0], out[1])
         dist[dist <= np.sqrt(2)] = 1
         dist[dist > np.sqrt(2)] = 0
-        print dist
-        print type(dist)
-        print len(dist)
-        print dist.size()[0]
-        # temp = torch.round(out)
 
         # print '$$$$$', temp.size()[0]
         # print '&&&&', len(temp)
