@@ -250,7 +250,7 @@ def play(weight_path):
 
     criterion = ContrastiveLoss()
 
-    learning_rate = 5e-6
+    learning_rate = 5e-3
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 
     training_loss_list = list()
@@ -315,7 +315,7 @@ def play(weight_path):
 
 
 def train_contrastive(net, optimizer, img1, img2, target, criterion):
-    # net.train()
+    net.train()
 
     optimizer.zero_grad()
     out = net(img1, img2)
