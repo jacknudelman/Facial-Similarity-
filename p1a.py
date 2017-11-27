@@ -220,7 +220,7 @@ def play(weight_path):
 
 
 def train_bce(net, optimizer, img1, img2, target, criterion):
-    net.train()
+    # net.train()
 
     optimizer.zero_grad()
     out = net(img1, img2)
@@ -230,7 +230,7 @@ def train_bce(net, optimizer, img1, img2, target, criterion):
     return loss.data[0]
 
 def test_bce(loader, net):
-    net.eval()
+    # net.eval()
 
     num_correct = 0
     num_images = 0
