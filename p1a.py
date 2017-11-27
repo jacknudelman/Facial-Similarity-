@@ -195,7 +195,7 @@ def play(weight_path):
         test_loss = test_bce(test_dataloader, net)
         print 'training_loss_list', test_loss
         testing_loss_list.append(test_loss)
-        
+
     torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
@@ -417,7 +417,7 @@ def train(weight_path):
 if '--save' in sys.argv:
     weight_path_index = sys.argv.index('--save') + 1
     weight_path = sys.argv[weight_path_index]
-    play()
+    play(weight_path)
     # train(weight_path)
 if '--load' in sys.argv:
     weight_path_index = sys.argv.index('--load') + 1
