@@ -88,6 +88,8 @@ class ContrastiveLoss(nn.Module):
         # distance = torch.sqrt(torch.pow(input1, 2) - torch.pow(input2, 2))
 
         # print 'distance ',distance
+        distance_func = nn.PairwiseDistance()
+        distance = distance_func(out[0], out[1])
         return torch.mean((target) * torch.pow(distance, 2) + (1 - target) * torch.pow(torch.clamp(self.margin - distance, min=0.0), 2))
 
 def compute_test_loss(net, dataloader):
@@ -278,7 +280,6 @@ def play(weight_path):
             labels = labels.type(torch.FloatTensor)
             target = Variable(labels).cuda()
 
-
             loss = train_contrastive(net, optimizer, img1, img2, target, criterion)
 
             training_loss_list.append(loss)
@@ -302,11 +303,15 @@ def play(weight_path):
     x_training = np.linspace(0, iter_num, len(training_loss_list))
     plt.plot(x_training, training_loss_list)
 
+    plt.title('training loss')
+    plt.savefig(file_name)
+    plt.clf()
+
     x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
     plt.plot(x_raw_testing, testing_loss_list)
 
-    plt.title('losses')
-    plt.savefig(file_name)
+    plt.title('testing accuracy')
+    plt.savefig(file_name + '_accuracy')
 
 
 def train_contrastive(net, optimizer, img1, img2, target, criterion):
@@ -314,7 +319,7 @@ def train_contrastive(net, optimizer, img1, img2, target, criterion):
 
     optimizer.zero_grad()
     out = net(img1, img2)
-    loss = criterion(out, target)
+    loss = criterion(out[0], out[1], target)
     loss.backward()
     optimizer.step()
     return loss.data[0]
