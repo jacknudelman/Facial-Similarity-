@@ -270,7 +270,7 @@ def play(weight_path):
     #     file_name = 'aug_figb'
     #     train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=test_transformation)
     #     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-    for epoch in range(25):
+    for epoch in range(20):
         print epoch
         for sample_batch in train_dataloader:
             iter_num += 1
@@ -315,7 +315,7 @@ def play(weight_path):
 
 
 def train_contrastive(net, optimizer, img1, img2, target, criterion):
-    net.train()
+    # net.train()
 
     optimizer.zero_grad()
     out = net(img1, img2)

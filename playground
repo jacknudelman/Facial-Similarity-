@@ -221,6 +221,32 @@ def print_graphs():
     plt.show()
     plt.clf()
 
+    img = cv2.imread('figb.png')
+    plt.title('train loss')
+    plt.imshow(img)
+    plt.show()
+    plt.clf()
+
+    img = cv2.imread('figb_accuracy.png')
+    plt.title('test loss')
+    plt.imshow(img)
+    plt.show()
+    plt.clf()
+
+    # img = cv2.imread('aug_figb.png')
+    # plt.title('test loss')
+    # plt.imshow(img)
+    # plt.show()
+    # plt.clf()
+
+
+
+    # img = cv2.imread('aug_figb_accuracy.png')
+    # plt.title('test loss')
+    # plt.imshow(img)
+    # plt.show()
+    # plt.clf()
+
 def run_test():
     net = Net(20).cuda()
     net.load_state_dict(torch.load('weights_file'))
