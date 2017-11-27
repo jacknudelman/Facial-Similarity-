@@ -195,19 +195,20 @@ def play(weight_path):
         test_loss = test_bce(test_dataloader, net)
         print 'training_loss_list', test_loss
         testing_loss_list.append(test_loss)
-torch.save(net.state_dict(), weight_path)
+        
+    torch.save(net.state_dict(), weight_path)
 
-print len(training_loss_list)
-print len(testing_loss_list)
+    print len(training_loss_list)
+    print len(testing_loss_list)
 
-x_training = np.linspace(0, iter_num, len(training_loss_list))
-plt.plot(x_training, training_loss_list)
+    x_training = np.linspace(0, iter_num, len(training_loss_list))
+    plt.plot(x_training, training_loss_list)
 
-x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
-plt.plot(x_raw_testing, testing_loss_list)
+    x_raw_testing = np.linspace(0, iter_num, len(testing_loss_list))
+    plt.plot(x_raw_testing, testing_loss_list)
 
-plt.title('losses')
-plt.savefig(file_name)
+    plt.title('losses')
+    plt.savefig(file_name)
 
 
 def train_bce(net, optimizer, img1, img2, target, criterion):
