@@ -221,7 +221,7 @@ def play(weight_path):
     plt.plot(x_raw_testing, testing_loss_list)
 
     plt.title('testing accuracy')
-    plt.savefig(file_name)
+    plt.savefig(file_name + '_accuracy')
 
 
 def train_bce(net, optimizer, img1, img2, target, criterion):
