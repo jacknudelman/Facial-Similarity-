@@ -2,26 +2,47 @@
   Without Augmentation:
     - I chose to have 25 epochs. I realized that no matter how much the train
     loss decreased, the test loss maintained around .5 accuracy so it didn't
-    matter how many epochs I did. However, I do 25 epochs for the augmentation
-    part so I did 25 here just to be consistent.
+    matter how many epochs I did as long as I did more than about 10. This is
+    because the network starts to memorize the training data after about 10
+    epochs since it has already seen the same images multiple times.
+    However, I do 25 epochs for the augmentation part so I did 25 here just to
+    be consistent.
 
     final training accuracy = 1.0
     final testing accuracy = 0.528
 
 
   with augmentation:
-    -
+    link: https://drive.google.com/file/d/1GStkDhr8ozhDpvqZLS1xnOabby_b9Xd0/view?usp=sharing
+
+    - I chose to pick 25 epochs here because I first did about 40 epochs and
+    saw that the test accuracy would incrementally increase up until about 25
+    epochs and then begin to slowly drop so I wanted to have the highest test
+    accuracy. This is
 
     final training accuracy = 0.8131818181818182
     final testing accuracy = 0.548
 
-    link: https://drive.google.com/file/d/1GStkDhr8ozhDpvqZLS1xnOabby_b9Xd0/view?usp=sharing
+    - comparing with no augmentation: We could see that the training accuracy is
+    way higher without augmentation than with and that the loss function reaches
+    a very low value way quicker without augmentation. This is because the
+    augmentation doesn't allow for the net to memorize the data since it is
+    essentially 'creating new data' by manipulating the images into images the net
+    most likely hasn't seen before. On the other hand, you could see that,
+    on average, the test accuracy does increase by a little with augmentation
+    as opposed to no average increase without augmentation. This is because the
+    net is getting better at classifying new data since it was trained with 'new'
+    data. It is important to note that the increase however is tiny and this is
+    because of the nature of BCELoss. This loss function just looks for
+    specific features but doesn't look at the relationship between the images.
 
 
 
 b)
   Without Augmentation:
-    - 
+    -
+    final training accuracy = 0.9121823
+    final testing accuracy = 0.636
 
 
 
