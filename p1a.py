@@ -144,6 +144,7 @@ def create_transform_list():
     flat = [x for sublist in trans for x in sublist]
 
     return flat
+
 def play(weight_path):
     net = Net(20).cuda()
     net.train()
@@ -177,9 +178,9 @@ def play(weight_path):
     if ('--save' in sys.argv):
         print 'augmenting'
         file_name = 'aug_fig'
-        train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
+        train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=test_transformation)
         train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-    for epoch in range(3):
+    for epoch in range(30):
         print epoch
         for sample_batch in train_dataloader:
             img1 = Variable(sample_batch[0], requires_grad=True).type(torch.FloatTensor).cuda()
@@ -203,7 +204,7 @@ def play(weight_path):
             testing_loss_list.append(out_acc[0])
 
 
-    # torch.save(net.state_dict(), weight_path)
+    torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
     print len(testing_loss_list)
@@ -252,7 +253,7 @@ def test_bce(loader, net):
             if (temp.data[i][0] == target.data[i][0]):
                 num_correct += 1
         num_images += temp.size()[0]
-        return [float(num_correct)/float(num_images), num_correct, num_images]
+    return [float(num_correct)/float(num_images), num_correct, num_images]
 
 def train(weight_path):
     # print 'created net'
@@ -439,7 +440,7 @@ if '--load' in sys.argv:
     # net.eval()
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
-    train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
+    train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
     test_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
