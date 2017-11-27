@@ -159,7 +159,7 @@ def play(weight_path):
 
     criterion = nn.BCELoss()
 
-    learning_rate = 1e-4
+    learning_rate = 1e-5
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 
     training_loss_list = list()
@@ -179,7 +179,7 @@ def play(weight_path):
         file_name = 'aug_fig'
         train_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
         train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-    for epoch in range(5):
+    for epoch in range(15):
         print epoch
         for sample_batch in train_dataloader:
             img1 = Variable(sample_batch[0], requires_grad=True).type(torch.FloatTensor).cuda()
