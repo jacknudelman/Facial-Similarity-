@@ -358,4 +358,4 @@ def test_contrastive(loader, net):
                 num_correct += 1
         num_images += dist.size()[0]
     return [float(num_correct)/float(num_images), num_correct, num_images]
-train('weights_file_b')
+play('weights_file_b')

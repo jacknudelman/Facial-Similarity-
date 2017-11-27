@@ -146,7 +146,7 @@ def create_transform_list():
     return flat
 
 def play(weight_path):
-    net = Net(8).cuda()
+    net = Net(25).cuda()
     net.train()
 
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
@@ -160,7 +160,7 @@ def play(weight_path):
 
     criterion = nn.BCELoss()
 
-    learning_rate = 1e-6
+    learning_rate = 5e-6
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 
     training_loss_list = list()
@@ -180,7 +180,7 @@ def play(weight_path):
         file_name = 'aug_fig'
         train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=test_transformation)
         train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
-    for epoch in range(10):
+    for epoch in range(25):
         print epoch
         for sample_batch in train_dataloader:
             iter_num += 1
