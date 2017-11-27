@@ -175,11 +175,11 @@ def play(weight_path):
     test_total_num_correctly_matched = 0
     test_total_num_imgs = 0
     file_name = 'fig'
-    if ('--save' in sys.argv):
-        print 'augmenting'
-        file_name = 'aug_fig'
-        train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=test_transformation)
-        train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
+    # if ('--save' in sys.argv):
+    #     print 'augmenting'
+    #     file_name = 'aug_fig'
+    #     train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=test_transformation)
+    #     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     for epoch in range(25):
         print epoch
         for sample_batch in train_dataloader:
@@ -205,7 +205,7 @@ def play(weight_path):
             # testing_loss_list.append(out_acc[0])
 
 
-    torch.save(net.state_dict(), weight_path)
+    # torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
     print len(testing_loss_list)
@@ -355,7 +355,7 @@ def train(weight_path):
     print 'total test  = ', test_total_num_imgs
     print 'average train accuracy is ', float(total_num_correctly_matched)/ float(total_num_imgs)
     print 'average test accuracy is ', float(test_total_num_correctly_matched)/ float(test_total_num_imgs)
-    torch.save(net.state_dict(), weight_path)
+    # torch.save(net.state_dict(), weight_path)
 
     print len(training_loss_list)
     print len(testing_loss_list)
@@ -452,11 +452,11 @@ if '--load' in sys.argv:
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
-    train_loss = test_bce(train_dataloader, net)
-    print 'training_loss_list', train_loss
+    acc[0] = test_bce(train_dataloader, net)
+    print 'training acuracy = ', acc[0]
 
-    test_loss = test_bce(test_dataloader, net)
-    print 'training_loss_list', test_loss
+    acc = test_bce(test_dataloader, net)
+    print 'testing accuracy = ', acc[0]
     # train_out = compute_test_loss(net, train_dataloader)
     # print 'final average training accuracy is ', float(train_out[1])/train_out[2]
     # test_out = compute_test_loss(net, test_dataloader)

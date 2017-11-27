@@ -17,6 +17,9 @@
 
     final average training accuracy =  0.510454545455
     final average testing accuracy =  0.751
+    training_loss_list [0.8131818181818182, 1789, 2200L]
+    training_loss_list [0.548, 548, 1000L]
+
 
 
 
