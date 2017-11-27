@@ -183,6 +183,7 @@ def play(weight_path):
     for epoch in range(30):
         print epoch
         for sample_batch in train_dataloader:
+            iter_num += 1
             img1 = Variable(sample_batch[0], requires_grad=True).type(torch.FloatTensor).cuda()
             img2 = Variable(sample_batch[1], requires_grad=True).type(torch.FloatTensor).cuda()
             labels = torch.from_numpy(np.array([float(i) for i in sample_batch[2]])).view(-1, 1)
