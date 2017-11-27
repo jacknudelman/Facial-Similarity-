@@ -146,7 +146,7 @@ def create_transform_list():
     return flat
 
 def play(weight_path):
-    net = Net(20).cuda()
+    net = Net(40).cuda()
     net.train()
 
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
