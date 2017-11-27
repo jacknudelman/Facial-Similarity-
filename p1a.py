@@ -146,7 +146,7 @@ def create_transform_list():
     return flat
 
 def play(weight_path):
-    net = Net(20).cuda()
+    net = Net(25).cuda()
     net.train()
 
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
@@ -160,7 +160,7 @@ def play(weight_path):
 
     criterion = nn.BCELoss()
 
-    learning_rate = 1e-6
+    learning_rate = 5e-6
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
 
     training_loss_list = list()
