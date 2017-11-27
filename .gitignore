@@ -4,3 +4,4 @@
 Applications/
 lfw/
 *.ipynb
+weights_file*

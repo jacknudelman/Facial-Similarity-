@@ -122,11 +122,11 @@ def read_inputs():
     transformation1 = transforms.Compose([transforms.Scale((128, 128)), transforms.CenterCrop(128 * 0.7), transforms.Scale((128, 128)), transforms.ToTensor() ])
 
     rand_face_dataset = RandFaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation)
-    # face_dataset = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation)
+    face_dataset = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation)
     # face_dataset1 = FaceDataset(csv_file='small_sample.txt', root_dir='lfw/', transform=transformation1)
 
     rand_dataloader = DataLoader(rand_face_dataset, batch_size=2, shuffle=False, num_workers=1)
-    # dataloader = DataLoader(face_dataset, batch_size=2, shuffle=False, num_workers=1)
+    dataloader = DataLoader(face_dataset, batch_size=2, shuffle=False, num_workers=1)
     # dataloader1 = DataLoader(face_dataset1, batch_size=2, shuffle=False, num_workers=1)
     net = Net(2)
 
@@ -136,7 +136,31 @@ def read_inputs():
         # labels = sample_batch['label'].type(torch.DoubleTensor)
         # labels = labels.view(-1, 1)
         # print sample_batch[0].size()
-        print type(sample_batch[0])
+        # print type(sample_batch[0])
+        # out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
+        # labels = sample_batch['label'].type(torch.FloatTensor)
+        # labels = labels.view(-1, 1)
+        # target = Variable(labels, requires_grad=False)
+        # print out.size()
+        # out = out.view(2, 1)
+        # print out.size()
+        # print target.size()
+        # print out.data[0]
+        # print out.data[0][0]
+        # print target[0]
+        # print target[0][0]
+        # break
+        # print out[:].size()
+        plt.figure()
+        # print 'in first'
+        show_batch(sample_batch)
+        print
+        break
+    for sample_batch in dataloader:
+        # labels = sample_batch['label'].type(torch.DoubleTensor)
+        # labels = labels.view(-1, 1)
+        # print sample_batch[0].size()
+        # print type(sample_batch[0])
         # out = net(Variable(sample_batch['image1'], requires_grad=False), Variable(sample_batch['image2'], requires_grad=False))
         # labels = sample_batch['label'].type(torch.FloatTensor)
         # labels = labels.view(-1, 1)
@@ -177,19 +201,21 @@ def print_graphs():
     plt.show()
     plt.clf()
 
+    img = cv2.imread('fig_accuracy.png')
+    plt.title('test loss')
+    plt.imshow(img)
+    plt.show()
+    plt.clf()
+
     img = cv2.imread('aug_fig.png')
     plt.title('test loss')
     plt.imshow(img)
     plt.show()
     plt.clf()
 
-    img = cv2.imread('figb.png')
-    plt.title('test loss')
-    plt.imshow(img)
-    plt.show()
-    plt.clf()
 
-    img = cv2.imread('aug_figb.png')
+
+    img = cv2.imread('aug_fig_accuracy.png')
     plt.title('test loss')
     plt.imshow(img)
     plt.show()
