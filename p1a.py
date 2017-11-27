@@ -428,17 +428,22 @@ if '--load' in sys.argv:
     # net.eval()
     # print 'created net'
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
-    train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
+    train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
     test_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
-    test_face_dataset = RandFaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
+    test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
-    train_out = compute_test_loss(net, train_dataloader)
-    print 'final average training accuracy is ', float(train_out[1])/train_out[2]
-    test_out = compute_test_loss(net, test_dataloader)
-    print 'final average testing accuracy is ', float(test_out[1])/test_out[2]
+    train_loss = test_bce(train_dataloader, net)
+    print 'training_loss_list', train_loss
+
+    test_loss = test_bce(test_dataloader, net)
+    print 'training_loss_list', test_loss
+    # train_out = compute_test_loss(net, train_dataloader)
+    # print 'final average training accuracy is ', float(train_out[1])/train_out[2]
+    # test_out = compute_test_loss(net, test_dataloader)
+    # print 'final average testing accuracy is ', float(test_out[1])/test_out[2]
     # learning_rate = 1e-6
     # optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
     # criterion = nn.BCELoss()
