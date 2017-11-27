@@ -245,10 +245,10 @@ def test_bce(loader, net):
         out = net(img1, img2)
         temp = torch.round(out)
 
-        print '$$$$$', temp.size()[0]
-        print '&&&&', len(temp)
-        print temp.data
-        print target.data
+        # print '$$$$$', temp.size()[0]
+        # print '&&&&', len(temp)
+        # print temp.data
+        # print target.data
         for i in range(temp.size()[0]):
             if (temp.data[i][0] == target.data[i][0]):
                 num_correct += 1
