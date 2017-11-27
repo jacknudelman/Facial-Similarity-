@@ -84,12 +84,12 @@ class ContrastiveLoss(nn.Module):
         super(ContrastiveLoss, self).__init__()
         self.margin = margin
 
-    def forward(self, distance, target):
+    def forward(self, img1, img2, target):
         # distance = torch.sqrt(torch.pow(input1, 2) - torch.pow(input2, 2))
 
         # print 'distance ',distance
         distance_func = nn.PairwiseDistance()
-        distance = distance_func(out[0], out[1])
+        distance = distance_func(img1, img2)
         return torch.mean((target) * torch.pow(distance, 2) + (1 - target) * torch.pow(torch.clamp(self.margin - distance, min=0.0), 2))
 
 def compute_test_loss(net, dataloader):
