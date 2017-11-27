@@ -145,6 +145,9 @@ def create_transform_list():
 
     return flat
 def play():
+    net = Net(20).cuda()
+    net.train()
+    
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
@@ -153,8 +156,7 @@ def play():
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     # print 'got datasets'
-    net = Net(20).cuda()
-    net.train()
+
     criterion = nn.BCELoss()
 
     learning_rate = 1e-4
