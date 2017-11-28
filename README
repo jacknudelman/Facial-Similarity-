@@ -1,3 +1,8 @@
+Jack Nudelman
+
+https://drive.google.com/open?id=19WUt1OnSRTTXDCUQD72zvEHj4OWT_HEI
+
+
 1a)
   Without Augmentation:
     - I chose to have 25 epochs. I realized that no matter how much the train
@@ -13,12 +18,13 @@
 
 
   with augmentation:
-    link: https://drive.google.com/file/d/1GStkDhr8ozhDpvqZLS1xnOabby_b9Xd0/view?usp=sharing
-
-    - I chose to pick 25 epochs here because I first did about 40 epochs and
-    saw that the test accuracy would incrementally increase up until about 25
-    epochs and then begin to slowly drop so I wanted to have the highest test
-    accuracy. This is
+  - I chose to pick 25 epochs here because I first did about 30 epochs and
+  saw that the test accuracy would incrementally increase up until about 25
+  epochs and then begin to slowly drop. I wanted to have the highest test
+  accuracy possible so I cut it off after 25 epochs. It is important to note that
+  the test accuracy fluctuated a lot because my learning rate was a bit too big
+  so it would keep overfitting. However, 25 epochs seemed to consistently
+  give me the best results so I stuck to it. 
 
     final training accuracy = 0.8131818181818182
     final testing accuracy = 0.548
@@ -39,10 +45,21 @@
 
 
 b)
+  - I chose a margin of 2 because I tried with 1 and progressively increased up
+  until 7 but two gave me the best results.
+
   Without Augmentation:
-    -
+    - I chose to pick 20 epochs here because I first did about 30 epochs and
+    saw that the test accuracy would incrementally increase up until about 20
+    epochs and then begin to slowly drop. I wanted to have the highest test
+    accuracy possible so I cut it off after 20 epochs. This still gave me a high
+    training accuracy and the highest possible testing accuracy
+
     final training accuracy = 0.9121823
-    final testing accuracy = 0.636
+    final testing accuracy = 0.624
+
+  With Augmentation
+
 
 
 

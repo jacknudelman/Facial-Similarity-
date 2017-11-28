@@ -114,11 +114,11 @@ def play(weight_path):
     test_total_num_correctly_matched = 0
     test_total_num_imgs = 0
     file_name = 'fig'
-    # if ('--save' in sys.argv):
-    #     print 'augmenting'
-    #     file_name = 'aug_fig'
-    #     train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=test_transformation)
-    #     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
+    if ('--save' in sys.argv):
+        print 'augmenting'
+        file_name = 'aug_fig'
+        train_face_dataset = RandFaceDataset(csv_file='train.txt', root_dir='lfw/', transform=test_transformation)
+        train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
     for epoch in range(25):
         print epoch
         for sample_batch in train_dataloader:
@@ -203,7 +203,7 @@ if '--save' in sys.argv:
 if '--load' in sys.argv:
     weight_path_index = sys.argv.index('--load') + 1
     weight_path = sys.argv[weight_path_index]
-    net = Net(20).cuda()
+    net = Net(25).cuda()
     # net.eval()
     net.load_state_dict(torch.load(weight_path))
     # net.eval()
