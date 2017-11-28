@@ -226,7 +226,7 @@ if '--load' in sys.argv:
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
-    acc[0] = test_contrastive(train_dataloader, net)
+    acc = test_contrastive(train_dataloader, net)
     print 'training acuracy = ', acc[0]
 
     acc = test_contrastive(test_dataloader, net)
