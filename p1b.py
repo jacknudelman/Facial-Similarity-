@@ -149,7 +149,7 @@ def play(weight_path):
         if (epoch + 1) % 5 == 0:
             out_acc = test_contrastive(train_dataloader, net)
             print 'train accuracy', out_acc[0]
-            # testing_loss_list.append(out_acc[0])
+
 
 
     torch.save(net.state_dict(), weight_path)
@@ -206,19 +206,18 @@ def test_contrastive(loader, net):
                 num_correct += 1
         num_images += dist.size()[0]
     return [float(num_correct)/float(num_images), num_correct, num_images]
+
 if '--save' in sys.argv:
     weight_path_index = sys.argv.index('--save') + 1
     weight_path = sys.argv[weight_path_index]
     play(weight_path)
-    # train(weight_path)
+
 if '--load' in sys.argv:
     weight_path_index = sys.argv.index('--load') + 1
     weight_path = sys.argv[weight_path_index]
     net = Net(25).cuda()
-    # net.eval()
     net.load_state_dict(torch.load(weight_path))
-    # net.eval()
-    # print 'created net'
+
     train_transformation = transforms.Compose([transforms.Scale((128, 128)), transforms.ToTensor()])
     train_face_dataset = FaceDataset(csv_file='train.txt', root_dir='lfw/', transform=train_transformation)
     train_dataloader = DataLoader(train_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
@@ -227,8 +226,8 @@ if '--load' in sys.argv:
     test_face_dataset = FaceDataset(csv_file='test.txt', root_dir='lfw/', transform=test_transformation)
     test_dataloader = DataLoader(test_face_dataset, batch_size=net.batchSize, shuffle=True, num_workers=net.batchSize)
 
-    acc[0] = test_bce(train_dataloader, net)
+    acc[0] = test_contrastive(train_dataloader, net)
     print 'training acuracy = ', acc[0]
 
-    acc = test_bce(test_dataloader, net)
+    acc = test_contrastive(test_dataloader, net)
     print 'testing accuracy = ', acc[0]

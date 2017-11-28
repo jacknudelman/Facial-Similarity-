@@ -233,19 +233,19 @@ def print_graphs():
     plt.show()
     plt.clf()
 
-    # img = cv2.imread('aug_figb.png')
-    # plt.title('test loss')
-    # plt.imshow(img)
-    # plt.show()
-    # plt.clf()
+    img = cv2.imread('aug_figb.png')
+    plt.title('test loss')
+    plt.imshow(img)
+    plt.show()
+    plt.clf()
 
 
 
-    # img = cv2.imread('aug_figb_accuracy.png')
-    # plt.title('test loss')
-    # plt.imshow(img)
-    # plt.show()
-    # plt.clf()
+    img = cv2.imread('aug_figb_accuracy.png')
+    plt.title('test loss')
+    plt.imshow(img)
+    plt.show()
+    plt.clf()
 
 def run_test():
     net = Net(20).cuda()
